@@ -164,6 +164,7 @@
   function mount() {
     // The correction filters, referenced from CSS as url(#cvd-protan) etc.
     const defs = document.createElement('div');
+    defs.className = 'cvd-defs';
     defs.setAttribute('aria-hidden', 'true');
     defs.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
     defs.innerHTML = '<svg width="0" height="0"><defs>' + Object.entries(MATRIX).map(([k, m]) =>
