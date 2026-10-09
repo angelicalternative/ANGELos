@@ -856,5 +856,12 @@ html[data-cvd] .mw-info a, html[data-cvd] .contact-addr { text-decoration: under
   .about-head h1 { font-size: 40px; }
   .about-bio { margin: 0 16px; font-size: 20px; }
   .zoom { margin-left: 0; }
+  /* Globe: stack the globe over the stats so the country list gets the full width. */
+  .globe { flex-direction: column; gap: 14px; padding: 14px; }
+  .globe-stage { width: 100%; }
+  .globe-canvas { width: min(260px, 100%); height: auto; aspect-ratio: 1; margin: 0 auto; }
+  .globe-loading { margin-top: 120px; }
+  .globe-count { font-size: 64px; }
+  .globe-list { flex: none; max-height: 220px; font-size: 17px; }
   .mini { right: auto; left: 50%; bottom: 12px; transform: translateX(-50%) scale(.72); transform-origin: bottom center; }
 }
