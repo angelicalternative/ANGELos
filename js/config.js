@@ -76,7 +76,7 @@ window.SITE = {
       'Texas', 'Virginia', 'Washington', 'West Virginia', 'Wyoming'] },
     'Uruguay',
     // Asia
-    'Indonesia', 'Israel', 'Japan', 'Palestine', 'Singapore', 'Turkey',
+    'Indonesia', 'Israel', 'Japan', 'Palestine', 'Turkey',
     // Europe
     'Albania', 'Austria', 'Bosnia and Herzegovina', 'Croatia', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Hungary',
     'Iceland', 'Italy', 'Monaco', 'Montenegro', 'Netherlands', 'Norway', 'Portugal', 'Serbia', 'Spain', 'Sweden',
