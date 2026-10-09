@@ -66,17 +66,18 @@ window.SITE = {
 
   // Globe tracker: every country you've been to (these count toward the 195).
   // Use a plain name, or { name, places: [...] } to list cities/states under it.
+  // territory: true adds a small “(territory)” note under the name.
   countries: [
     // Americas
-    'Argentina', 'Aruba', 'Bahamas', 'Barbados',
+    'Argentina', { name: 'Aruba', territory: true }, 'Bahamas', 'Barbados',
     { name: 'Brazil', places: ['Rio de Janeiro', 'São Paulo'] },
-    'Cayman Islands', 'Chile', 'Colombia', 'Dominican Republic', 'Ecuador', 'Jamaica', 'Mexico', 'Panama', 'Paraguay', 'Peru', 'Turks and Caicos Islands',
+    { name: 'Cayman Islands', territory: true }, 'Chile', 'Colombia', 'Dominican Republic', 'Ecuador', 'Jamaica', 'Mexico', 'Panama', 'Paraguay', 'Peru', { name: 'Turks and Caicos Islands', territory: true },
     { name: 'United States', places: ['Alaska', 'Arizona', 'California', 'Colorado', 'Florida', 'Georgia', 'Hawaii', 'Maine',
       'Massachusetts', 'Nevada', 'New Jersey', 'New York', 'North Carolina', 'Pennsylvania', 'South Carolina', 'Tennessee',
       'Texas', 'Virginia', 'Washington', 'West Virginia', 'Wyoming'] },
     'Uruguay',
     // Asia
-    'Hong Kong', 'Indonesia', 'Israel', 'Japan', 'Palestine', 'Turkey',
+    { name: 'Hong Kong', territory: true }, 'Indonesia', 'Israel', 'Japan', 'Palestine', 'Turkey',
     // Europe
     'Albania', 'Austria', 'Bosnia and Herzegovina', 'Croatia', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Hungary',
     'Iceland', 'Italy', 'Monaco', 'Montenegro', 'Netherlands', 'Norway', 'Portugal', 'Serbia', 'Spain', 'Sweden',

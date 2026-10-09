@@ -107,7 +107,8 @@ function GlobeTracker(win, countryList, territoryList = []) {
   $('.globe-bar').innerHTML = Array.from({ length: SEG }, (_, k) => `<i class="${k < Math.round((n / TOTAL) * SEG) ? 'on' : ''}"></i>`).join('');
   const t = I18N.t, C = I18N.country;
   const places = c => (c.places && c.places.length
-    ? `<small>${c.places.length > 3 ? `${c.places.length} ${t(c.name === 'United States' ? 'states' : 'places')}: ` : ''}${c.places.map(C).join(', ')}</small>` : '');
+    ? `<small>${c.places.length > 3 ? `${c.places.length} ${t(c.name === 'United States' ? 'states' : 'places')}: ` : ''}${c.places.map(C).join(', ')}</small>`
+    : c.territory ? `<small>(${t('territory')})</small>` : '');
   // data-place keeps the English name (it matches the map); the label follows the language.
   function drawText() {
     $('.globe-of').textContent = `${t('OF')} ${TOTAL} ${t('COUNTRIES')} · ${Math.round((n / TOTAL) * 100)}%` +
