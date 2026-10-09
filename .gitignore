@@ -1,0 +1,5 @@
+# macOS folder settings
+.DS_Store
+
+# Local preview server (not needed on the live site)
+serve.py
