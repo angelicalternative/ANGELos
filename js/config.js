@@ -68,15 +68,15 @@ window.SITE = {
   // Use a plain name, or { name, places: [...] } to list cities/states under it.
   countries: [
     // Americas
-    'Argentina', 'Bahamas', 'Barbados',
+    'Argentina', 'Aruba', 'Bahamas', 'Barbados',
     { name: 'Brazil', places: ['Rio de Janeiro', 'São Paulo'] },
-    'Chile', 'Colombia', 'Dominican Republic', 'Ecuador', 'Jamaica', 'Mexico', 'Panama', 'Paraguay', 'Peru',
+    'Cayman Islands', 'Chile', 'Colombia', 'Dominican Republic', 'Ecuador', 'Jamaica', 'Mexico', 'Panama', 'Paraguay', 'Peru', 'Turks and Caicos Islands',
     { name: 'United States', places: ['Alaska', 'Arizona', 'California', 'Colorado', 'Florida', 'Georgia', 'Hawaii', 'Maine',
       'Massachusetts', 'Nevada', 'New Jersey', 'New York', 'North Carolina', 'Pennsylvania', 'South Carolina', 'Tennessee',
       'Texas', 'Virginia', 'Washington', 'West Virginia', 'Wyoming'] },
     'Uruguay',
     // Asia
-    'Indonesia', 'Israel', 'Japan', 'Palestine', 'Turkey',
+    'Hong Kong', 'Indonesia', 'Israel', 'Japan', 'Palestine', 'Turkey',
     // Europe
     'Albania', 'Austria', 'Bosnia and Herzegovina', 'Croatia', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Hungary',
     'Iceland', 'Italy', 'Monaco', 'Montenegro', 'Netherlands', 'Norway', 'Portugal', 'Serbia', 'Spain', 'Sweden',
@@ -87,7 +87,8 @@ window.SITE = {
   ],
 
   // Places that belong to another country — listed, but not counted toward the 195.
-  territories: ['Aruba', 'Cayman Islands', 'Turks and Caicos Islands', 'Hong Kong'],
+  // (Aruba, Cayman Islands, Turks and Caicos and Hong Kong are counted as countries above.)
+  territories: [],
 
   // My Work (work.html), oldest first (oldest = innermost band).
   // Put each project's files in assets/work/<id>/ and list them here:
