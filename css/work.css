@@ -287,7 +287,13 @@ body.work-page { background: var(--maroon); }
 /* Locked (unreleased) project: blurred photos with a padlock, nothing opens. */
 .is-locked { position: relative; overflow: hidden; cursor: not-allowed; }
 .pj-gallery figure.is-locked { cursor: not-allowed; }
-.is-locked img { filter: blur(6px) saturate(.8); transform: scale(1.06); }
+.is-locked img { filter: blur(14px) saturate(.7) brightness(1.08); transform: scale(1.12); }
+/* Frosted glass over the photo: a milky layer with a fine dot texture. */
+.is-locked::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(rgba(255, 255, 255, .35) 1px, transparent 1.5px) 0 0 / 4px 4px, rgba(240, 244, 242, .38);
+}
+.lock-badge { z-index: 1; }
 .pj-cover-art.is-locked img { transform: scale(1.04); }
 .pj-cover-art.is-locked:hover img { transform: scale(1.04); box-shadow: 12px 12px 0 rgba(0, 0, 0, .3); }
 .lock-badge {
