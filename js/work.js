@@ -9,6 +9,7 @@
   const compact = () => matchMedia('(max-width: 760px), (max-aspect-ratio: 4 / 5)').matches;
   const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const MOVE = reduce ? 0 : 820; // how long the bands take to rearrange (ms)
+  const T = I18N.t, P = I18N.pick; // English / Spanish (js/i18n.js)
 
   // Pixel arrows (7×7 grid) so they match the pixel type instead of a system font.
   const ARROWS = {
@@ -54,15 +55,18 @@
 
   // ── Contact + resume on the maroon field ──
   const info = mw.querySelector('.mw-info');
-  info.querySelector('.mw-info-role').innerHTML = `${esc(SITE.role)}<br>${esc(SITE.studio)}`;
+  function drawInfo() {
+    info.querySelector('.mw-info-role').innerHTML = `${esc(I18N.es ? T('siteRole') : SITE.role)}<br>${esc(I18N.es ? T('studio') : SITE.studio)}`;
+    const rows = [
+      ['Email', `<a href="mailto:${esc(SITE.email)}" target="_blank" rel="noopener">${esc(SITE.email)}</a>`],
+      handle && ['Instagram', `<a href="${esc(SITE.instagramUrl)}" target="_blank" rel="noopener">@${esc(handle)}</a>`],
+      SITE.substackUrl && ['Substack', `<a href="${esc(SITE.substackUrl)}" target="_blank" rel="noopener">${esc(SITE.substackUrl.replace(/^https?:\/\/|\/$/g, ''))}</a>`],
+      SITE.location && ['Based in', esc(SITE.location)],
+    ].filter(Boolean);
+    info.querySelector('.mw-info-list').innerHTML = rows.map(([t, v]) => `<div><dt>${T(t)}</dt><dd>${v}</dd></div>`).join('');
+  }
   const handle = (SITE.instagramUrl.match(/instagram\.com\/([^/?#]+)/) || [])[1];
-  const rows = [
-    ['Email', `<a href="mailto:${esc(SITE.email)}" target="_blank" rel="noopener">${esc(SITE.email)}</a>`],
-    handle && ['Instagram', `<a href="${esc(SITE.instagramUrl)}" target="_blank" rel="noopener">@${esc(handle)}</a>`],
-    SITE.substackUrl && ['Substack', `<a href="${esc(SITE.substackUrl)}" target="_blank" rel="noopener">${esc(SITE.substackUrl.replace(/^https?:\/\/|\/$/g, ''))}</a>`],
-    SITE.location && ['Based in', esc(SITE.location)],
-  ].filter(Boolean);
-  info.querySelector('.mw-info-list').innerHTML = rows.map(([t, v]) => `<div><dt>${t}</dt><dd>${v}</dd></div>`).join('');
+  drawInfo();
   const cover = mw.querySelector('.mw-cover');
   setTimeout(() => mw.classList.remove('loading'), 1400);
 
@@ -109,60 +113,60 @@
   // ── Project content ──
   function build(p, k) {
     const isEvent = p.kind === 'event';
-    const facts = [['ROLE', p.role], ['DATE', p.date], ['FORMAT', p.format]]
+    const facts = [['ROLE', P(p, 'role')], ['DATE', p.date], ['FORMAT', P(p, 'format')]]
       .filter(([, v]) => v);
     // Photo tiles for a gallery; empty lists show labelled placeholders.
     const tiles = (list, label, count, base) => (list || []).length
-      ? list.map((im, i) => `<figure class="reveal" style="--d:${base + i * 0.1}s" tabindex="0" role="button" aria-label="View ${label.toLowerCase()} ${i + 1} larger"><img src="${esc(im.src)}" alt="${esc(im.caption || p.title)}" loading="lazy"${im.focus ? ` style="object-position:${esc(im.focus)}"` : ''} />${im.caption ? `<figcaption>${esc(im.caption)}</figcaption>` : ''}</figure>`).join('')
-      : Array.from({ length: count }, (_, i) => `<div class="placeholder reveal" style="--d:${base + i * 0.1}s">${label} 0${i + 1}<small>assets/work/${esc(p.id)}/</small></div>`).join('');
+      ? list.map((im, i) => ({ ...im, caption: P(im, 'caption') })).map((im, i) => `<figure class="reveal" style="--d:${base + i * 0.1}s" tabindex="0" role="button" aria-label="View ${label.toLowerCase()} ${i + 1} larger"><img src="${esc(im.src)}" alt="${esc(im.caption || p.title)}" loading="lazy"${im.focus ? ` style="object-position:${esc(im.focus)}"` : ''} />${im.caption ? `<figcaption>${esc(im.caption)}</figcaption>` : ''}</figure>`).join('')
+      : Array.from({ length: count }, (_, i) => `<div class="placeholder reveal" style="--d:${base + i * 0.1}s">${T(label)} 0${i + 1}<small>assets/work/${esc(p.id)}/</small></div>`).join('');
     const imgs = tiles(p.images, 'IMAGE', 4, 0.55);
     const promo = tiles(p.promo, 'POST', 3, 0.6);
     const next = projects[(k + 1) % n];
     return `
       <article class="pj">
-        <div class="pj-top reveal" style="--d:.05s"><button class="pj-btn" type="button" data-close>${arrow('left')}ALL WORK</button></div>
+        <div class="pj-top reveal" style="--d:.05s"><button class="pj-btn" type="button" data-close>${arrow('left')}${T('ALL WORK')}</button></div>
         <header class="pj-head reveal" style="--d:.1s">
-          <p class="pj-tag">${esc(p.tag)}</p>
+          <p class="pj-tag">${esc(P(p, 'tag'))}</p>
           <h2 class="pj-title">${esc(p.title)}</h2>
           <p class="pj-date">${esc(p.date)}</p>
         </header>
         <div class="pj-drop"><div>
           <div class="pj-intro">
-            <p class="pj-summary reveal" style="--d:.25s">${esc(p.summary)}</p>
-            <dl class="pj-facts reveal" style="--d:.35s">${facts.map(([t, v]) => `<div><dt>${esc(t)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
+            <p class="pj-summary reveal" style="--d:.25s">${esc(P(p, 'summary'))}</p>
+            <dl class="pj-facts reveal" style="--d:.35s">${facts.map(([t, v]) => `<div><dt>${esc(T(t))}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
           </div>
           <section class="pj-section reveal" style="--d:.45s">
-            <h3>${isEvent ? 'POSTER & RECAP' : 'THE ISSUE'}</h3>
+            <h3>${esc(T(isEvent ? 'POSTER & RECAP' : 'THE ISSUE'))}</h3>
             ${p.cover ? `
             <div class="pj-cover">
               <a class="pj-cover-art" href="${esc(p.edition || p.pdf || p.cover)}" target="_blank" rel="noopener" aria-label="${p.edition || p.pdf ? 'See the full edition of' : 'View the poster for'} ${esc(p.title)}">
                 <img src="${esc(p.cover)}" alt="${isEvent ? 'Poster' : 'Cover'} of ${esc(p.title)}" loading="lazy" />
               </a>
               <div class="pj-cover-side">
-                <p>${esc(p.format)}</p>
-                ${p.edition || p.pdf ? `<a class="pj-btn pj-btn-big" href="${esc(p.edition || p.pdf)}" target="_blank" rel="noopener">SEE FULL EDITION${arrow('ne')}</a>` : isEvent ? '' : '<p class="pj-soon">FULL EDITION COMING SOON</p>'}
+                <p>${esc(P(p, 'format'))}</p>
+                ${p.edition || p.pdf ? `<a class="pj-btn pj-btn-big" href="${esc(p.edition || p.pdf)}" target="_blank" rel="noopener">${T('SEE FULL EDITION')}${arrow('ne')}</a>` : isEvent ? '' : `<p class="pj-soon">${T('FULL EDITION COMING SOON')}</p>`}
               </div>
             </div>` : `
             <div class="mag" data-pdf="${esc(p.pdf || '')}">
               ${p.pdf ? `<div class="mag-spread"></div>
-                <div class="mag-bar"><button class="pj-btn" type="button" data-mag="prev">${arrow('left')}PREV</button><span class="mag-pages">LOADING…</span><button class="pj-btn" type="button" data-mag="next">NEXT${arrow('right')}</button></div>`
+                <div class="mag-bar"><button class="pj-btn" type="button" data-mag="prev">${arrow('left')}${T('PREV')}</button><span class="mag-pages">${T('LOADING')}…</span><button class="pj-btn" type="button" data-mag="next">${T('NEXT')}${arrow('right')}</button></div>`
               : `<div class="placeholder">${isEvent ? 'EVENT POSTER / RECAP PDF' : 'MAGAZINE PDF'} GOES HERE<small>assets/work/${esc(p.id)}/</small></div>`}
             </div>`}
           </section>
-          ${p.video ? `<section class="pj-section pj-video reveal" style="--d:.5s"><h3>${isEvent ? 'THE NIGHT' : 'MOTION'}</h3><video src="${esc(p.video)}" controls playsinline preload="metadata"></video></section>` : ''}
+          ${p.video ? `<section class="pj-section pj-video reveal" style="--d:.5s"><h3>${T(isEvent ? 'THE NIGHT' : 'MOTION')}</h3><video src="${esc(p.video)}" controls playsinline preload="metadata"></video></section>` : ''}
           <section class="pj-section">
-            <h3 class="reveal" style="--d:.5s">${isEvent ? 'PHOTOS' : 'BEHIND THE SCENES'}</h3>
+            <h3 class="reveal" style="--d:.5s">${T(isEvent ? 'PHOTOS' : 'BEHIND THE SCENES')}</h3>
             <div class="pj-gallery">${imgs}</div>
           </section>
           <section class="pj-section">
-            <h3 class="reveal" style="--d:.55s">INSTAGRAM &amp; PROMO</h3>
+            <h3 class="reveal" style="--d:.55s">${esc(T('INSTAGRAM & PROMO'))}</h3>
             <div class="pj-gallery pj-gallery-ig${p.promoRatio === 'auto' ? ' is-natural' : ''}" style="--cols:${p.promoCols || Math.min(3, (p.promo || []).length || 3)}${p.promoRatio && p.promoRatio !== 'auto' ? `;--ar:${esc(p.promoRatio)}` : ''}">${promo}</div>
           </section>
-          ${(p.credits || []).length ? `<section class="pj-section reveal" style="--d:.6s"><h3>CREDITS</h3><dl class="pj-credits">${p.credits.map(([r, nme]) => `<div><dt>${esc(r)}</dt><dd>${esc(nme)}</dd></div>`).join('')}</dl></section>` : ''}
-          ${(p.links || []).length ? `<section class="pj-section reveal" style="--d:.6s"><h3>LINKS</h3><div class="pj-links">${p.links.map(l => `<a class="pj-btn" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)}${arrow('ne')}</a>`).join('')}</div></section>` : ''}
+          ${(p.credits || []).length ? `<section class="pj-section reveal" style="--d:.6s"><h3>${T('CREDITS')}</h3><dl class="pj-credits">${p.credits.map(([r, nme], i) => `<div><dt>${esc((I18N.es && p.es && p.es.credits && p.es.credits[i]) || r)}</dt><dd>${esc(nme)}</dd></div>`).join('')}</dl></section>` : ''}
+          ${(p.links || []).length ? `<section class="pj-section reveal" style="--d:.6s"><h3>${T('LINKS')}</h3><div class="pj-links">${p.links.map(l => `<a class="pj-btn" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)}${arrow('ne')}</a>`).join('')}</div></section>` : ''}
           <footer class="pj-foot reveal" style="--d:.7s">
-            <button class="pj-btn" type="button" data-close>${arrow('left')}ALL WORK</button>
-            <button class="pj-btn" type="button" data-goto="${esc(next.id)}">NEXT: ${esc(next.title)}${arrow('right')}</button>
+            <button class="pj-btn" type="button" data-close>${arrow('left')}${T('ALL WORK')}</button>
+            <button class="pj-btn" type="button" data-goto="${esc(next.id)}">${T('NEXT:')} ${esc(next.title)}${arrow('right')}</button>
           </footer>
         </div></div>
       </article>`;
@@ -224,7 +228,7 @@
       band.querySelector('.band-hit').focus({ preventScroll: true });
     }, reduce ? 0 : 280);
     active = null;
-    document.title = 'My Work — Angelo Gibbs';
+    document.title = `${T('My Work')} — Angelo Gibbs`;
     setFavicon(null);
     if (push) history.pushState({}, '', location.pathname + location.search);
   }
@@ -249,7 +253,7 @@
   lb.setAttribute('aria-modal', 'true');
   lb.setAttribute('aria-label', 'Photo viewer');
   lb.innerHTML = `
-    <button class="lb-btn lb-close" type="button" aria-label="Close">CLOSE</button>
+    <button class="lb-btn lb-close" type="button" aria-label="Close">${T('CLOSE')}</button>
     <button class="lb-btn lb-prev" type="button" aria-label="Previous photo">${arrow('left')}</button>
     <figure class="lb-stage"><img alt="" /><figcaption><span class="lb-cap"></span><span class="lb-count"></span></figcaption></figure>
     <button class="lb-btn lb-next" type="button" aria-label="Next photo">${arrow('right')}</button>`;
@@ -300,6 +304,20 @@
     const mag = active.classList.contains('is-dropped') && active.querySelector('.mag[data-pdf]:not([data-pdf=""])');
     if (mag && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) flip(mag, e.key === 'ArrowRight' ? 1 : -1);
   });
+  // Switching EN / ES: redraw the info block and the open project; others rebuild when opened.
+  I18N.on(() => {
+    drawInfo();
+    lb.querySelector('.lb-close').textContent = T('CLOSE');
+    bands.forEach(b => { const pnl = b.querySelector('.band-panel'); if (b !== active) { delete pnl.dataset.built; pnl.innerHTML = ''; } });
+    if (active) {
+      const k = bands.indexOf(active), pnl = active.querySelector('.band-panel'), top = pnl.scrollTop;
+      pnl.innerHTML = build(projects[k], k);
+      pnl.scrollTop = top;
+      loadMag(active.querySelector('.mag'));
+    } else document.title = `${T('My Work')} — Angelo Gibbs`;
+  });
+  if (I18N.es) document.title = `${T('My Work')} — Angelo Gibbs`;
+
   window.addEventListener('popstate', () => {
     const id = location.hash.slice(1);
     id ? open(id, { push: false }) : close({ push: false });
@@ -327,7 +345,7 @@
       const task = pdfjsLib.getDocument(mag.dataset.pdf);
       task.onProgress = ({ loaded, total }) => {
         // Ignore late progress once pages are showing (the rest streams in the background).
-        if (total && label && !mag.doc) label.textContent = `LOADING ${Math.min(99, Math.round((loaded / total) * 100))}%`;
+        if (total && label && !mag.doc) label.textContent = `${T('LOADING')} ${Math.min(99, Math.round((loaded / total) * 100))}%`;
       };
       mag.doc = await task.promise;
       mag.spreads = compact() ? Array.from({ length: mag.doc.numPages }, (_, i) => [i + 1]) : spreads(mag.doc.numPages);
@@ -343,7 +361,7 @@
   function nativeViewer(mag) {
     const src = mag.dataset.pdf;
     mag.innerHTML = `<iframe class="mag-native" src="${esc(src)}#view=FitH" title="Magazine PDF"></iframe>
-      <div class="mag-bar"><span></span><a class="pj-btn" href="${esc(src)}" target="_blank" rel="noopener">OPEN PDF${arrow('ne')}</a></div>`;
+      <div class="mag-bar"><span></span><a class="pj-btn" href="${esc(src)}" target="_blank" rel="noopener">${T('OPEN PDF')}${arrow('ne')}</a></div>`;
     mag.classList.add('loaded');
   }
   async function renderSpread(mag) {
@@ -362,7 +380,7 @@
     wrap.replaceChildren(...canvases);
     const total = mag.doc.numPages;
     mag.querySelector('.mag-pages').textContent =
-      `${pages.length > 1 ? `PAGES ${pages[0]}–${pages[1]}` : `PAGE ${pages[0]}`} / ${total}`;
+      `${pages.length > 1 ? `${T('PAGES')} ${pages[0]}–${pages[1]}` : `${T('PAGE')} ${pages[0]}`} / ${total}`;
     mag.querySelector('[data-mag="prev"]').disabled = mag.at === 0;
     mag.querySelector('[data-mag="next"]').disabled = mag.at === mag.spreads.length - 1;
   }

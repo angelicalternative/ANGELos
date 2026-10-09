@@ -12,7 +12,9 @@
 
   // ── Startup chime (synthesised — a warm F♯-major swell like a classic Mac) ──
   let ctx = null;
-  try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+  if (!matchMedia('(pointer: coarse)').matches) {
+    try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+  }
   function chime() {
     if (!ctx) return;
     const t = ctx.currentTime + 0.02;
@@ -54,26 +56,35 @@
   }
   step();
 
+  // Phones and tablets skip the chime: no sound, no tap needed, straight to the desktop.
+  const touch = matchMedia('(pointer: coarse)').matches;
+
   function finishLoading() {
+    if (touch) return enter({ silent: true });
     if (ctx && ctx.state !== 'running') ctx.resume().catch(() => {});
     // Give the browser a beat to allow audio; if it won't, ask for a click.
     setTimeout(() => {
       if (audioReady()) return enter();
       boot.classList.add('needs-click');
       prompt.hidden = false;
+      // iPhone Safari only unlocks sound on a finished tap (touchend / click), and its
+      // resume() promise can hang when called too early, so go in straight away.
+      const EVENTS = ['pointerup', 'touchend', 'click', 'keydown'];
+      let gone = false;
       const go = () => {
-        window.removeEventListener('pointerdown', go);
-        window.removeEventListener('keydown', go);
-        (ctx ? ctx.resume() : Promise.resolve()).then(enter, enter);
+        if (gone) return;
+        gone = true;
+        EVENTS.forEach(ev => window.removeEventListener(ev, go, true));
+        if (ctx) { try { ctx.resume().catch(() => {}); } catch (e) {} }
+        enter();
       };
-      window.addEventListener('pointerdown', go);
-      window.addEventListener('keydown', go);
+      EVENTS.forEach(ev => window.addEventListener(ev, go, true));
     }, 120);
   }
 
-  function enter() {
+  function enter({ silent = false } = {}) {
     try { localStorage.setItem('angelos-boot', String(Date.now())); } catch (e) {}
-    chime();
+    if (!silent) chime();
     boot.classList.add('done');
     setTimeout(() => { boot.remove(); welcome(); }, 350);
   }

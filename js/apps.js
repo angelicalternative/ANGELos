@@ -56,8 +56,10 @@ function JunkFolder(win, items) {
   // A little mess: each item gets its own fixed tilt.
   const tilt = i => (((i * 37) % 9) - 4) * 0.9;
 
-  $('.junk-count').textContent = `${items.length} object${items.length === 1 ? '' : 's'}`;
-  if (!items.length) { grid.innerHTML = '<p class="junk-empty">Empty… for now.</p>'; return; }
+  const countText = () => { $('.junk-count').textContent = `${items.length} ${I18N.t(items.length === 1 ? 'object' : 'objects')}`; };
+  countText();
+  I18N.on(countText);
+  if (!items.length) { grid.innerHTML = `<p class="junk-empty">${I18N.t('Empty… for now.')}</p>`; return; }
   grid.innerHTML = items.map((it, i) => {
     const k = kind(it.src), name = esc(it.name || it.src.split('/').pop());
     const thumb = k === 'image' ? `<img src="${it.src}" alt="" loading="lazy" />`
@@ -74,12 +76,12 @@ function JunkFolder(win, items) {
     else if (k === 'video') stage.innerHTML = `<video src="${it.src}" controls autoplay playsinline></video>`;
     else if (k === 'audio') stage.innerHTML =
       `<div class="junk-player">${Pixel.disc({ rim: '#3B2F00', face: '#F7D417', ring: '#FFE766', hub: '#3B2F00' })}` +
-      `<p>${esc(name)}</p>${it.note ? `<small>${esc(it.note)}</small>` : ''}<audio src="${it.src}" controls autoplay></audio></div>`;
+      `<p>${esc(name)}</p>${it.note ? `<small>${esc(I18N.pick(it, 'note'))}</small>` : ''}<audio src="${it.src}" controls autoplay></audio></div>`;
     else if (k === 'text') {
       stage.innerHTML = '<pre class="junk-note">Loading…</pre>';
       try { stage.querySelector('pre').textContent = await (await fetch(it.src)).text(); }
-      catch (e) { stage.querySelector('pre').textContent = 'Couldn’t open this note.'; }
-    } else stage.innerHTML = `<a class="px-btn" href="${it.src}" target="_blank" rel="noopener">OPEN FILE</a>`;
+      catch (e) { stage.querySelector('pre').textContent = I18N.t('Couldn’t open this note.'); }
+    } else stage.innerHTML = `<a class="px-btn" href="${it.src}" target="_blank" rel="noopener">${I18N.t('OPEN FILE')}</a>`;
     stage.querySelectorAll('audio, video').forEach(m => m.addEventListener('play', hush));
     grid.hidden = true; view.hidden = false;
   }
@@ -101,16 +103,28 @@ function GlobeTracker(win, countryList, territoryList = []) {
 
   // Counter, progress bar and list don't need the map, so draw them right away.
   $('.globe-count').textContent = String(n).padStart(2, '0');
-  $('.globe-of').textContent = `OF ${TOTAL} COUNTRIES · ${Math.round((n / TOTAL) * 100)}%` +
-    (territoryList.length ? ` · +${territoryList.length} TERRITORIES` : '');
   const SEG = 24;
   $('.globe-bar').innerHTML = Array.from({ length: SEG }, (_, k) => `<i class="${k < Math.round((n / TOTAL) * SEG) ? 'on' : ''}"></i>`).join('');
+  const t = I18N.t, C = I18N.country;
   const places = c => (c.places && c.places.length
-    ? `<small>${c.places.length > 3 ? `${c.places.length} ${c.name === 'United States' ? 'states' : 'places'}: ` : ''}${c.places.join(', ')}</small>` : '');
-  $('.globe-list').innerHTML =
-    [...items].sort((a, b) => a.name.localeCompare(b.name)).map(c => `<li data-place="${c.name}" tabindex="0" role="button" aria-pressed="false"><span>${c.name}</span>${places(c)}</li>`).join('') +
-    (territoryList.length ? `<li class="globe-list-head">TERRITORIES</li>` +
-      [...territoryList].sort().map(t => `<li class="is-territory" data-place="${t}" tabindex="0" role="button" aria-pressed="false"><span>${t}</span></li>`).join('') : '');
+    ? `<small>${c.places.length > 3 ? `${c.places.length} ${t(c.name === 'United States' ? 'states' : 'places')}: ` : ''}${c.places.map(C).join(', ')}</small>` : '');
+  // data-place keeps the English name (it matches the map); the label follows the language.
+  function drawText() {
+    $('.globe-of').textContent = `${t('OF')} ${TOTAL} ${t('COUNTRIES')} · ${Math.round((n / TOTAL) * 100)}%` +
+      (territoryList.length ? ` · +${territoryList.length} ${t('TERRITORIES')}` : '');
+    const picked = $('.globe-list .is-picked');
+    const pickedName = picked && picked.dataset.place;
+    const byName = (a, b) => C(a).localeCompare(C(b), I18N.lang);
+    $('.globe-list').innerHTML =
+      [...items].sort((a, b) => byName(a.name, b.name)).map(c => `<li data-place="${c.name}" tabindex="0" role="button" aria-pressed="false"><span>${C(c.name)}</span>${places(c)}</li>`).join('') +
+      (territoryList.length ? `<li class="globe-list-head">${t('TERRITORIES')}</li>` +
+        [...territoryList].sort(byName).map(x => `<li class="is-territory" data-place="${x}" tabindex="0" role="button" aria-pressed="false"><span>${C(x)}</span></li>`).join('') : '');
+    const again = pickedName && [...$('.globe-list').querySelectorAll('[data-place]')].find(li => li.dataset.place === pickedName);
+    if (again) { again.classList.add('is-picked'); again.setAttribute('aria-pressed', 'true'); }
+  }
+  drawText();
+  I18N.on(drawText);
+  if (window.PREFS) PREFS.onCvd(() => { if (world) draw(); });
   const countries = [...items.map(c => c.name), ...territoryList];
 
   // Names in the map data that differ from everyday names.
@@ -128,7 +142,9 @@ function GlobeTracker(win, countryList, territoryList = []) {
 
   const canvas = $('.globe-canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
   const S = canvas.width; // drawn small, shown big = chunky pixels
-  const PALETTE = [[0x18, 0x03, 0xBB], [0xD9, 0xD9, 0xD9], [0xF7, 0xD4, 0x17], [0, 0, 0], [0x5A, 0x4C, 0xE0], [0xE5, 0x22, 0x22]];
+  const PALETTE = [[0x18, 0x03, 0xBB], [0xD9, 0xD9, 0xD9], [0xF7, 0xD4, 0x17], [0, 0, 0], [0x5A, 0x4C, 0xE0], [0xE5, 0x22, 0x22], [0xFF, 0xFF, 0xFF]];
+  // Picked place: red, or black in colourblind mode (black never gets confused with yellow).
+  const PICK = () => (window.PREFS && PREFS.cvd ? '#000000' : '#E52222');
   // [longitude, latitude] for places too small to show at this map size.
   const SMALL = {
     barbados: [-59.55, 13.1], singapore: [103.82, 1.35], monaco: [7.42, 43.74], aruba: [-69.97, 12.52],
@@ -168,7 +184,7 @@ function GlobeTracker(win, countryList, territoryList = []) {
       }, 90);
       if (pick) select(pick.name);
     } catch (e) {
-      $('.globe-loading').textContent = 'Couldn’t load the map (offline?)';
+      $('.globe-loading').textContent = I18N.t('Couldn’t load the map (offline?)');
     }
   }
 
@@ -179,22 +195,22 @@ function GlobeTracker(win, countryList, territoryList = []) {
     ctx.beginPath(); path({ type: 'Sphere' }); ctx.fillStyle = '#1803BB'; ctx.fill();
     ctx.beginPath(); world.forEach(f => path(f)); ctx.fillStyle = '#D9D9D9'; ctx.fill();
     ctx.beginPath(); visited.forEach(f => path(f)); ctx.fillStyle = '#F7D417'; ctx.fill();
-    if (pick && pick.feature) { ctx.beginPath(); path(pick.feature); ctx.fillStyle = '#E52222'; ctx.fill(); }
+    if (pick && pick.feature) { ctx.beginPath(); path(pick.feature); ctx.fillStyle = PICK(); ctx.fill(); }
     // Places too small for the map get a yellow dot instead.
     const center = [-rot[0], -rot[1]];
     dots.forEach(ll => {
       if (d3.geoDistance(ll, center) > Math.PI / 2 - 0.05) return;
       const [x, y] = proj(ll);
       ctx.fillStyle = '#000'; ctx.fillRect(Math.round(x) - 2, Math.round(y) - 2, 4, 4);
-      ctx.fillStyle = pick && pick.ll === ll ? '#E52222' : '#F7D417'; ctx.fillRect(Math.round(x) - 1, Math.round(y) - 1, 2, 2);
+      ctx.fillStyle = pick && pick.ll === ll ? PICK() : '#F7D417'; ctx.fillRect(Math.round(x) - 1, Math.round(y) - 1, 2, 2);
     });
     // Blinking pixel marker over the picked place.
     if (pick && pick.ll && d3.geoDistance(pick.ll, center) < Math.PI / 2 - 0.05) {
       const [x, y] = proj(pick.ll).map(Math.round), r = blink % 8 < 4 ? 7 : 9;
       ctx.fillStyle = '#000';
       ctx.fillRect(x - 3, y - 3, 6, 6);
-      ctx.fillStyle = '#E52222'; ctx.fillRect(x - 2, y - 2, 4, 4);
-      ctx.fillStyle = '#000';
+      ctx.fillStyle = window.PREFS && PREFS.cvd ? '#FFFFFF' : '#E52222'; ctx.fillRect(x - 2, y - 2, 4, 4);
+      ctx.fillStyle = window.PREFS && PREFS.cvd ? '#FFFFFF' : '#000'; // white corners stand out on the blue sea
       [[-r, -r], [r - 2, -r], [-r, r - 2], [r - 2, r - 2]].forEach(([a, b]) => {
         ctx.fillRect(x + a, y + b, 2, 2);
         ctx.fillRect(x + a + (a < 0 ? 2 : -2), y + b, 2, 2);
@@ -380,8 +396,9 @@ function Minesweeper(win) {
   flagBtn.addEventListener('click', () => {
     flagMode = !flagMode;
     flagBtn.setAttribute('aria-pressed', flagMode);
-    flagBtn.querySelector('b').textContent = flagMode ? 'ON' : 'OFF';
+    flagBtn.querySelector('b').textContent = I18N.t(flagMode ? 'ON' : 'OFF');
   });
   flagBtn.querySelector('.ms-flag-ico').innerHTML = FLAG;
+  I18N.on(() => { flagBtn.querySelector('b').textContent = I18N.t(flagMode ? 'ON' : 'OFF'); });
   reset();
 }

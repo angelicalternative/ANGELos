@@ -50,14 +50,14 @@ window.SITE = {
   photos: [
     { src: 'assets/photos/australia.png', caption: 'Australia' },
     { src: 'assets/photos/face-a.png', caption: 'FACE A' },
-    { src: 'assets/photos/sunset.png', caption: 'Sunset' },
+    { src: 'assets/photos/sunset.png', caption: 'Sunset', es: { caption: 'Atardecer' } },
   ],
 
   // Junk folder: creative odds and ends, just for fun. Put files in assets/junk.
   // Images/GIFs open full size, .mp4/.webm/.mov play, .txt/.md open as notes.
   junk: [
     { src: 'assets/junk/skatepark.png', name: 'skatepark.png' },
-    { src: 'assets/junk/vision-demo.mp3', name: 'VISION.als', note: 'Ableton project · playing the demo bounce' },
+    { src: 'assets/junk/vision-demo.mp3', name: 'VISION.als', note: 'Ableton project · playing the demo bounce', es: { note: 'Proyecto de Ableton · sonando el demo' } },
     { src: 'assets/junk/emi.m4a', name: 'EMI.aif' },
     { src: 'assets/junk/monkey.png', name: 'monkey.png' },
     { src: 'assets/junk/taronga-zoo.png', name: 'taronga_zoo.png' },
@@ -105,6 +105,11 @@ window.SITE = {
       summary: 'The inaugural edition of Angelo by Angelo Studio, the independent Spanish-language magazine I founded. Cover star Pedro Restrepo Botero, the face of the Libertad Guarceña party, sits down with Guadalupe Campuzano and me in a neon-lit back room as organisers prepare the CMJ youth council election, and we try to find the person behind the campaign.',
       favicon: 'assets/icons/folder.svg',
       cover: 'assets/work/pedro/cover.jpg', edition: 'assets/work/pedro/pedro-contra-pedro-full-edition.pdf',
+      es: {
+        role: 'Fundador · Director creativo · Diseñador', format: 'Revista impresa gratuita · 20 páginas',
+        summary: 'La edición inaugural de Angelo by Angelo Studio, la revista independiente en español que fundé. El protagonista de portada, Pedro Restrepo Botero, la cara del partido Libertad Guarceña, se sienta con Guadalupe Campuzano y conmigo en un cuarto con luz de neón mientras los organizadores preparan la elección del CMJ, y tratamos de encontrar a la persona detrás de la campaña.',
+        credits: ['Dirección creativa, arte y diseño', 'Producción literaria', 'Modelo de portada', 'Producción editorial', 'Fotografía', 'Iluminación', 'Ilustración y maquillaje', 'Asistencia visual'],
+      },
       credits: [
         ['Creative direction, art & design', 'Angelo Gibbs'],
         ['Literary production', 'Angelo Gibbs & Guadalupe Campuzano'],
@@ -133,6 +138,11 @@ window.SITE = {
     { id: 'dama', title: 'Dama De La Primavera', date: 'MAY 2026', color: '#ecbf65', ink: '#2a1e0c', // masthead gold, a touch more saturated (still pastel)
       tag: '2ND EDITION · ANGELO BY ANGELO STUDIO', role: 'Editor-in-chief · Art director', format: 'Free print magazine · 24 pages',
       summary: 'The second edition of Angelo by Angelo Studio, and the debut of our “Damas de las Temporadas” series. Spring has always been at the heart of Antioquia, “the land of eternal spring,” and this issue follows it through cover star Guadalupe Campuzano Toro, alongside stories on the region’s new subcultures and the lie of looksmaxxing.',
+      es: {
+        tag: 'SEGUNDA EDICIÓN · ANGELO BY ANGELO STUDIO', role: 'Editor en jefe · Director de arte', format: 'Revista impresa gratuita · 24 páginas',
+        summary: 'La segunda edición de Angelo by Angelo Studio y el debut de nuestra serie “Damas de las Temporadas”. La primavera siempre ha estado en el corazón de Antioquia, “la tierra de la eterna primavera”, y esta edición la sigue a través de la protagonista de portada, Guadalupe Campuzano Toro, junto a historias sobre las nuevas subculturas de la región y la mentira del looksmaxxing.',
+        credits: ['Editor en jefe y dirección artística', 'Portada', 'Producción editorial y contenido literario', 'Director audiovisual', 'Fotografía', 'Maquillaje y utilería', 'Ilustración', 'Director de audio', 'Composición'],
+      },
       credits: [
         ['Editor-in-chief & art direction', 'Angelo Gibbs'],
         ['Cover', 'Guadalupe Campuzano Toro'],
@@ -151,7 +161,7 @@ window.SITE = {
       images: [
         { src: 'assets/work/dama/dama-01.jpg', caption: '' },
         { src: 'assets/work/dama/dama-02.jpg', caption: '' },
-        { src: 'assets/work/dama/dama-03.jpg', caption: 'Guadalupe Campuzano with her Doberman, Athos' },
+        { src: 'assets/work/dama/dama-03.jpg', caption: 'Guadalupe Campuzano with her Doberman, Athos', es: { caption: 'Guadalupe Campuzano con su dóberman, Athos' } },
         { src: 'assets/work/dama/dama-04.jpg', caption: '' },
         { src: 'assets/work/dama/dama-05.jpg', caption: '' },
         { src: 'assets/work/dama/dama-06.jpg', caption: '' },
@@ -170,6 +180,11 @@ window.SITE = {
       favicon: 'assets/icons/face-a-mascot.png',
       cover: 'assets/work/face-a/poster.jpg',
       summary: 'A vinyl-culture live event I conceived and co-chaired with Samantha Zuluaga Cuartas for Angelo by Angelo Studio, overseeing production, sponsorships and on-site direction, with Casa del Ángel as main sponsor. The marketing ran on a code game: whoever cracked the code won a free ticket.',
+      es: {
+        tag: 'EVENTO EN VIVO · NOCHE DE VINILO', role: 'Creador · Codirector general', format: 'Evento en vivo de cultura vinilo',
+        summary: 'Un evento en vivo de cultura vinilo que ideé y codirigí con Samantha Zuluaga Cuartas para Angelo by Angelo Studio, a cargo de la producción, los patrocinios y la dirección en el lugar, con Casa del Ángel como patrocinador principal. El marketing fue un juego de códigos: quien descifrara el código ganaba una entrada gratis.',
+        credits: ['Creador y codirector general', 'Codirectora general y jefa de logística', 'Vendedor principal', 'Promo / audiovisual', 'Equipo de sonido', 'Coordinadora de producción', 'Seguridad / control de entrada', 'Asistentes de operaciones', 'Patrocinio principal'],
+      },
       credits: [
         ['Creator, co-chair & co-director', 'Angelo Gibbs'],
         ['Co-chair, co-director & head of logistics', 'Samantha Zuluaga Cuartas'],
@@ -210,6 +225,11 @@ window.SITE = {
       summary: 'The third edition of Angelo by Angelo Studio asks what it means to be unbound. Cover star Eider Enamorado, a skater who never touches the brakes, spends an afternoon at the skatepark falling and getting back up until the trick finally lands on the sixteenth try, and explains why, for him, freedom means choosing your own rules.',
       favicon: 'assets/icons/tv.svg',
       cover: 'assets/work/unbound/cover.jpg', edition: '',
+      es: {
+        tag: 'TERCERA EDICIÓN · ANGELO BY ANGELO STUDIO', role: 'Editor en jefe · Director de arte', format: 'Revista impresa',
+        summary: 'La tercera edición de Angelo by Angelo Studio se pregunta qué significa ser unbound. El protagonista de portada, Eider Enamorado, un skater que no conoce el freno, pasa una tarde en el skatepark cayéndose y levantándose hasta que el truco por fin sale en el intento dieciséis, y explica por qué, para él, la libertad es elegir tus propias reglas.',
+        credits: ['Editor en jefe y dirección artística', 'Directora de contenido literario', 'Producción editorial', 'Director audiovisual y utilería', 'Fotografía', 'Maquillaje', 'Director de audio y composición', 'Modelo de portada'],
+      },
       credits: [
         ['Editor-in-chief & art direction', 'Angelo Gibbs'],
         ['Literary content director', 'Guadalupe Campuzano Toro'],

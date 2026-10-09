@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>My Work — Angelo Gibbs</title>
   <meta name="description" content="Selected work by Angelo Gibbs: Angelo by Angelo Studio magazine editions and FACE A: Record Night." />
+  <!-- Link previews (iMessage, WhatsApp, Instagram, X…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Angelo Gibbs" />
+  <meta property="og:title" content="My Work · Angelo Gibbs" />
+  <meta property="og:description" content="Angelo by Angelo Studio magazine editions and FACE A: Record Night." />
+  <meta property="og:url" content="https://angelogibbs.com/work.html" />
+  <meta property="og:image" content="https://angelogibbs.com/assets/images/social-preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Angelo Gibbs sitting by a harbour, pixelated" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://angelogibbs.com/assets/images/social-preview.jpg" />
   <link rel="icon" type="image/svg+xml" href="assets/icons/portrait.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/work-favicon-32.png" />
   <link rel="apple-touch-icon" href="assets/icons/work-apple-touch-icon.png" />
@@ -18,7 +30,7 @@
   <main class="mw loading" id="mw" aria-label="My Work">
     <div class="mw-cover"><img src="assets/images/mywork-cover.png" alt="" /></div>
     <header class="mw-header">
-      <h1>My Work</h1>
+      <h1 data-i18n>My Work</h1>
       <a class="mw-home" href="index.html"><i data-arrow="left"></i>ANGELos</a>
     </header>
     <!-- Contact + resume, on the maroon field (filled from js/config.js) -->
@@ -28,14 +40,15 @@
       <p class="mw-info-role"></p>
       <dl class="mw-info-list"></dl>
       <div class="mw-info-resume">
-        <a class="mw-info-btn" href="assets/resume/resume.pdf" target="_blank" rel="noopener">View Resume<i data-arrow="ne"></i></a>
-        <a class="mw-info-btn" href="assets/resume/resume.pdf" download="Angelo-Gibbs-Resume.pdf">Download Resume<i data-arrow="down"></i></a>
+        <a class="mw-info-btn" href="assets/resume/resume.pdf" target="_blank" rel="noopener"><span data-i18n>View Resume</span><i data-arrow="ne"></i></a>
+        <a class="mw-info-btn" href="assets/resume/resume.pdf" download="Angelo-Gibbs-Resume.pdf"><span data-i18n>Download Resume</span><i data-arrow="down"></i></a>
       </div>
     </aside>
     <!-- Project bands are built by js/work.js from js/config.js -->
     <div class="mw-scan" aria-hidden="true"></div>
   </main>
 
+  <script src="js/i18n.js" defer></script>
   <script src="js/config.js" defer></script>
   <script src="js/work.js" defer></script>
 </body>

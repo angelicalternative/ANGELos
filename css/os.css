@@ -727,7 +727,7 @@ img { image-rendering: pixelated; }
 }
 .boot-start img { width: 29px; height: 29px; image-rendering: pixelated; }
 @keyframes pulse { 50% { outline-color: transparent; } }
-.boot.needs-click { cursor: url('../assets/icons/cursor.svg') 0 0, pointer; }
+.boot.needs-click { cursor: url('../assets/icons/cursor.svg') 0 0, pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .boot.needs-click .boot-text { opacity: .7; }
 
 /* ── Welcome notice ────────────────────────────────────── */
@@ -737,6 +737,8 @@ img { image-rendering: pixelated; }
 .welcome img { width: 64px; height: 64px; }
 .welcome p { margin: 0; font-family: var(--serif); font-size: 26px; }
 .welcome b { font-family: var(--ui); font-weight: 400; color: var(--blue); }
+.welcome .welcome-ok { margin-top: 4px; padding: 6px 22px; font-size: 20px; box-shadow: 4px 4px 0 #555; }
+.welcome .welcome-ok:active { box-shadow: 2px 2px 0 #555; transform: translate(2px, 2px); }
 .welcome-timer { display: block; width: 100%; height: 6px; margin-top: 8px; background: var(--blue); transform-origin: left; }
 .win-welcome.counting .welcome-timer { animation: shrink 4.5s linear forwards; }
 @keyframes shrink { to { transform: scaleX(0); } }
@@ -746,15 +748,107 @@ img { image-rendering: pixelated; }
   .boot-dots::after { content: '...'; }
 }
 
+/* ── EN / ES + colourblind switches (js/i18n.js) ───────── */
+.site-prefs {
+  position: fixed;
+  left: 24px;
+  bottom: 20px;
+  z-index: 9; /* like the mini player: open windows sit on top of it */
+  display: flex;
+  gap: 8px;
+  font-family: var(--ui);
+}
+.lang-toggle, .cvd-toggle {
+  display: flex;
+  background: #fff;
+  border: 2px solid var(--black);
+  border-radius: 2px;
+  box-shadow: 3px 3px 0 var(--black);
+}
+.lang-toggle button, .cvd-toggle {
+  padding: 4px 10px 3px;
+  background: #fff;
+  border: 0;
+  font-size: 13px;
+  letter-spacing: .08em;
+  line-height: 1.2;
+}
+.lang-toggle button + button { border-left: 2px solid var(--black); }
+.cvd-toggle { align-items: center; justify-content: center; padding: 4px 8px 3px; border: 2px solid var(--black); }
+.cvd-toggle svg { width: 13px; height: 13px; display: block; }
+.cvd-toggle.is-on, .a11y-open .cvd-toggle { background: var(--blue); color: #fff; }
+.lang-toggle button[aria-pressed="true"] { background: var(--blue); color: #fff; }
+.lang-toggle button[aria-pressed="false"]:hover, .site-prefs:not(.a11y-open) .cvd-toggle:not(.is-on):hover { background: var(--gray-lt); }
+.lang-toggle button:focus-visible, .cvd-toggle:focus-visible { outline: 2px dashed var(--blue); outline-offset: 2px; }
+
+/* Colourblind menu */
+.cvd-wrap { position: relative; display: flex; }
+.cvd-menu {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  z-index: -1; /* tucked behind the icon while it slides */
+  min-width: 210px;
+  padding: 8px;
+  background: #fff;
+  border: 2px solid var(--black);
+  box-shadow: 3px 3px 0 var(--black);
+  /* Hidden: pushed down behind the buttons. Open: slides up into place. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(24px);
+  transition: transform .22s steps(4), opacity .22s steps(4), visibility 0s .22s;
+}
+.a11y-open .cvd-menu { opacity: 1; visibility: visible; transform: none; transition: transform .22s steps(4), opacity .22s steps(4); }
+@media (prefers-reduced-motion: reduce) { .cvd-menu, .a11y-open .cvd-menu { transition: none; } }
+.cvd-menu-head { margin: 0 0 6px; padding: 0 4px; font-size: 11px; letter-spacing: .08em; color: var(--blue); }
+.cvd-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 4px;
+  background: none;
+  border: 0;
+  font-size: 14px;
+  text-align: left;
+}
+.cvd-menu button small { margin-left: auto; font-size: 10px; color: #666; }
+.cvd-menu button i { width: 10px; height: 10px; flex: none; border: 2px solid var(--black); background: #fff; }
+.cvd-menu button[aria-checked="true"] i { background: var(--blue); box-shadow: inset 0 0 0 2px #fff; }
+.cvd-menu button:hover, .cvd-menu button:focus-visible { background: var(--gray-lt); outline: none; }
+/* The whole page goes through the matching correction filter (filters live in js/i18n.js). */
+html[data-cvd="protan"] { filter: url(#cvd-protan); }
+html[data-cvd="deutan"] { filter: url(#cvd-deutan); }
+html[data-cvd="tritan"] { filter: url(#cvd-tritan); }
+/* Colourblind mode: no information carried by red alone. */
+html[data-cvd] .globe-list li.is-picked::before { background: var(--black); box-shadow: 0 0 0 2px var(--black), 0 0 0 4px #fff; }
+html[data-cvd] .globe-list li.is-picked span { color: var(--black); text-decoration: underline 2px; text-underline-offset: 3px; }
+html[data-cvd] .globe-list li.is-picked span::before { content: '▶ '; }
+html[data-cvd] .mw-info a, html[data-cvd] .contact-addr { text-decoration: underline; text-underline-offset: 3px; }
+
 /* ── Small screens ─────────────────────────────────────── */
 @media (max-width: 760px) {
   .boot-start { font-size: 26px; padding: 12px 18px; gap: 10px; }
   .boot-text { font-size: 20px; }
-  .icons { top: 12px; left: 8px; gap: 2px; }
-  .icons-right { left: auto; right: 8px; }
-  .icon { width: 96px; }
-  .icon img { width: 60px; height: 60px; }
-  .icon span { width: 92px; font-size: 11px; }
+  /* Phone home screen: all nine icons in a 3×3 grid up top, the photo below. */
+  .desktop {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-content: start;
+    justify-items: center;
+    row-gap: 10px;
+    padding: max(18px, env(safe-area-inset-top)) 6px 0;
+    /* Cropped so you sit in the open space between the icons and the player. */
+    background-position: 24% 100%;
+  }
+  .icons, .icons-right { display: contents; }
+  .icon { width: 100%; max-width: 118px; }
+  .icon img { width: 58px; height: 58px; }
+  .icon span { width: calc(100% - 10px); font-size: 11px; }
+  .site-prefs { left: auto; right: 12px; bottom: 148px; flex-direction: column; align-items: flex-end; } /* clear of the photo, above the player */
+  .cvd-menu { left: auto; right: 0; }
+  .lang-toggle button, .cvd-toggle { padding: 5px 12px 4px; font-size: 14px; }
   .win { left: 8px !important; top: 8px !important; width: calc(100vw - 26px); }
   .about { grid-template-columns: 1fr; padding: 0 0 18px; }
   .about-photo { width: 100%; height: auto; aspect-ratio: 1; }

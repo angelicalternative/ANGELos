@@ -4,7 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Angelo Gibbs</title>
-  <meta name="description" content="Angelo Gibbs — graphic designer and art director. Founder of Angelo Studio." />
+  <meta name="description" content="Angelo Gibbs, graphic designer and art director. Founder of Angelo Studio." />
+  <!-- Link previews (iMessage, WhatsApp, Instagram, X…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Angelo Gibbs" />
+  <meta property="og:title" content="Angelo Gibbs" />
+  <meta property="og:description" content="Graphic designer and art director. Founder of Angelo Studio." />
+  <meta property="og:url" content="https://angelogibbs.com/" />
+  <meta property="og:image" content="https://angelogibbs.com/assets/images/social-preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Angelo Gibbs sitting by a harbour, pixelated" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://angelogibbs.com/assets/images/social-preview.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" />
@@ -27,51 +39,51 @@
   <!-- Boot screen -->
   <div class="boot" id="boot" role="status" aria-live="polite">
     <div class="boot-inner">
-      <p class="boot-text">STARTING SYSTEM UP<span class="boot-dots"></span></p>
+      <p class="boot-text"><span data-i18n>STARTING SYSTEM UP</span><span class="boot-dots"></span></p>
       <div class="boot-bar" aria-hidden="true"></div>
-      <p class="boot-start" hidden><img src="assets/icons/cursor.svg" alt="" />Click anywhere to start</p>
+      <p class="boot-start" hidden><img src="assets/icons/cursor.svg" alt="" /><span data-i18n>Click anywhere to start</span></p>
     </div>
   </div>
   <main class="desktop" id="desktop">
 
     <!-- Desktop icons -->
     <nav class="icons" aria-label="Desktop">
-      <button class="icon" type="button" data-open="about"><img src="assets/icons/about.svg" alt="" /><span>ABOUT ME</span></button>
-      <a class="icon" href="work.html" target="_blank" rel="noopener"><img src="assets/icons/my-work.svg" alt="" /><span>MY WORK</span></a>
+      <button class="icon" type="button" data-open="about"><img src="assets/icons/about.svg" alt="" /><span data-i18n>ABOUT ME</span></button>
+      <a class="icon" href="work.html"><img src="assets/icons/my-work.svg" alt="" /><span data-i18n>MY WORK</span></a>
       <a class="icon" id="substack-link" href="#" target="_blank" rel="noopener"><img src="assets/icons/typewriter.svg" alt="" /><span>SUBSTACK</span></a>
-      <button class="icon" type="button" data-open="playlist"><img src="assets/icons/music.svg" alt="" /><span>MUSIC</span></button>
-      <button class="icon" type="button" data-open="contact"><img src="assets/icons/contact.svg" alt="" /><span>CONTACT ME</span></button>
+      <button class="icon" type="button" data-open="playlist"><img src="assets/icons/music.svg" alt="" /><span data-i18n>MUSIC</span></button>
+      <button class="icon" type="button" data-open="contact"><img src="assets/icons/contact.svg" alt="" /><span data-i18n>CONTACT ME</span></button>
     </nav>
 
     <!-- Fun apps (right side) -->
     <nav class="icons icons-right" aria-label="Fun apps">
-      <button class="icon" type="button" data-open="photos"><img src="assets/icons/photos.svg" alt="" /><span>PHOTOS</span></button>
-      <button class="icon" type="button" data-open="globe"><img src="assets/icons/globe.svg" alt="" /><span>GLOBE TRACKER</span></button>
-      <button class="icon" type="button" data-open="mines"><img src="assets/icons/minesweeper.svg" alt="" /><span>MINESWEEPER</span></button>
-      <button class="icon" type="button" data-open="junk"><img src="assets/icons/junk.png" alt="" /><span>JUNK</span></button>
+      <button class="icon" type="button" data-open="photos"><img src="assets/icons/photos.svg" alt="" /><span data-i18n>PHOTOS</span></button>
+      <button class="icon" type="button" data-open="globe"><img src="assets/icons/globe.svg" alt="" /><span data-i18n>GLOBE TRACKER</span></button>
+      <button class="icon" type="button" data-open="mines"><img src="assets/icons/minesweeper.svg" alt="" /><span data-i18n>MINESWEEPER</span></button>
+      <button class="icon" type="button" data-open="junk"><img src="assets/icons/junk.png" alt="" /><span data-i18n>JUNK</span></button>
     </nav>
 
     <!-- About -->
     <section class="win win-about" id="win-about" data-win hidden aria-label="About me">
       <header class="titlebar">
         <button class="tb-close" type="button" data-close aria-label="Close"><img src="assets/icons/close.svg" alt="" /></button>
-        <h2>ABOUT ME!</h2>
+        <h2 data-i18n>ABOUT ME!</h2>
       </header>
       <div class="win-body about">
         <img class="about-photo" src="assets/images/me.png" alt="Angelo Gibbs" />
         <div class="about-head">
           <h1>ANGELO GIBBS</h1>
-          <p class="about-role">Graphic Designer &amp; Art Director</p>
+          <p class="about-role" data-i18n="role">Graphic Designer &amp; Art Director</p>
           <fieldset class="stats">
-            <legend>PLAYER STATS</legend>
-            <div class="stat"><span>CREATIVITY</span><i class="bar" style="--v:.95"></i><b>99</b></div>
+            <legend data-i18n>PLAYER STATS</legend>
+            <div class="stat"><span data-i18n>CREATIVITY</span><i class="bar" style="--v:.95"></i><b>99</b></div>
             <div class="stat"><span>MOODBOARDS</span><i class="bar" style="--v:.85"></i><b>87</b></div>
-            <div class="stat"><span>SLEEP</span><i class="bar bar-low" style="--v:.1"></i><b>12</b></div>
-            <div class="stat"><span>FONTS INSTALLED</span><i class="bar" style="--v:1"></i><b>999+</b></div>
+            <div class="stat"><span data-i18n>SLEEP</span><i class="bar bar-low" style="--v:.1"></i><b>12</b></div>
+            <div class="stat"><span data-i18n>FONTS INSTALLED</span><i class="bar" style="--v:1"></i><b>999+</b></div>
           </fieldset>
         </div>
-        <p class="about-bio">Hi, I'm Angelo! I'm a self-taught graphic designer and art director from El Retiro, Colombia. I founded Angelo Studio, a Spanish-language creative agency where I make the editorial magazine Angelo by Angelo Studio, along with photography and audiovisual content.</p>
-        <button class="px-btn" type="button" data-open="resume">OPEN RESUME</button>
+        <p class="about-bio" data-i18n="bio">Hi, I'm Angelo! I'm a self-taught graphic designer and art director from El Retiro, Colombia. I founded Angelo Studio, a Spanish-language creative agency where I make the editorial magazine Angelo by Angelo Studio, along with photography and audiovisual content.</p>
+        <button class="px-btn" type="button" data-open="resume"><span data-i18n>OPEN RESUME</span></button>
       </div>
     </section>
 
@@ -79,15 +91,15 @@
     <section class="win win-contact" id="win-contact" data-win hidden aria-label="Contact me">
       <header class="titlebar">
         <button class="tb-close" type="button" data-close aria-label="Close"><img src="assets/icons/close.svg" alt="" /></button>
-        <h2>CONTACT ME!</h2>
+        <h2 data-i18n>CONTACT ME!</h2>
       </header>
       <div class="win-body contact">
         <img class="contact-icon" src="assets/icons/contact.svg" alt="" />
-        <p class="contact-lead">Let&rsquo;s make something together.</p>
-        <a class="px-btn contact-email" id="contact-email" href="#"><span data-glyph="mail"></span>EMAIL ME</a>
+        <p class="contact-lead" data-i18n="lead">Let&rsquo;s make something together.</p>
+        <a class="px-btn contact-email" id="contact-email" href="#"><span data-glyph="mail"></span><span data-i18n>EMAIL ME</span></a>
         <p class="contact-addr" id="contact-addr"></p>
         <fieldset class="socials">
-          <legend>SOCIALS</legend>
+          <legend data-i18n>SOCIALS</legend>
           <a class="px-btn contact-ig" id="contact-ig" href="#" aria-label="Instagram"><span data-glyph="instagram"></span>INSTAGRAM</a>
         </fieldset>
       </div>
@@ -97,7 +109,7 @@
     <section class="win win-photos" id="win-photos" data-win hidden aria-label="Photo gallery">
       <header class="titlebar">
         <button class="tb-close" type="button" data-close aria-label="Close"><img src="assets/icons/close.svg" alt="" /></button>
-        <h2>PHOTOS</h2>
+        <h2 data-i18n>PHOTOS</h2>
         <span class="tb-path gal-count">00 / 00</span>
       </header>
       <div class="win-body gal">
@@ -114,16 +126,16 @@
     <section class="win win-globe" id="win-globe" data-win hidden aria-label="Globe tracker">
       <header class="titlebar">
         <button class="tb-close" type="button" data-close aria-label="Close"><img src="assets/icons/close.svg" alt="" /></button>
-        <h2>GLOBE TRACKER</h2>
+        <h2 data-i18n>GLOBE TRACKER</h2>
       </header>
       <div class="win-body globe">
         <div class="globe-stage">
           <canvas class="globe-canvas" width="132" height="132" aria-label="Spinning globe with visited countries in yellow"></canvas>
-          <p class="globe-loading">LOADING MAP…</p>
-          <p class="globe-hint">DRAG TO SPIN</p>
+          <p class="globe-loading" data-i18n>LOADING MAP…</p>
+          <p class="globe-hint" data-i18n>DRAG TO SPIN</p>
         </div>
         <div class="globe-side">
-          <small>COUNTRIES VISITED</small>
+          <small data-i18n>COUNTRIES VISITED</small>
           <strong class="globe-count">00</strong>
           <span class="globe-of"></span>
           <div class="globe-bar"></div>
@@ -136,7 +148,7 @@
     <section class="win win-mines" id="win-mines" data-win hidden aria-label="Minesweeper">
       <header class="titlebar">
         <button class="tb-close" type="button" data-close aria-label="Close"><img src="assets/icons/close.svg" alt="" /></button>
-        <h2>MINESWEEPER</h2>
+        <h2 data-i18n>MINESWEEPER</h2>
       </header>
       <div class="win-body ms">
         <div class="ms-top">
@@ -145,8 +157,8 @@
           <output class="ms-led ms-time" aria-label="Seconds">000</output>
         </div>
         <div class="ms-board"></div>
-        <button class="ms-flagmode" type="button" aria-pressed="false"><span class="ms-flag-ico"></span>FLAG MODE: <b>OFF</b></button>
-        <p class="ms-help">Click to dig · Right-click to flag</p>
+        <button class="ms-flagmode" type="button" aria-pressed="false"><span class="ms-flag-ico"></span><span data-i18n>FLAG MODE:</span> <b>OFF</b></button>
+        <p class="ms-help" data-i18n>Click to dig · Right-click to flag</p>
       </div>
     </section>
 
@@ -154,36 +166,36 @@
     <section class="win win-junk" id="win-junk" data-win hidden aria-label="Junk folder">
       <header class="titlebar">
         <button class="tb-close" type="button" data-close aria-label="Close"><img src="assets/icons/close.svg" alt="" /></button>
-        <h2>JUNK</h2>
-        <span class="tb-path">C:\ANGELO\JUNK\</span>
+        <h2 data-i18n>JUNK</h2>
+        <span class="tb-path" data-i18n="junkpath">C:\ANGELO\JUNK\</span>
       </header>
       <div class="win-body junk">
         <div class="junk-grid"></div>
         <div class="junk-view" hidden>
           <div class="junk-viewbar">
-            <button class="sq-btn junk-back" type="button">&lt; BACK</button>
+            <button class="sq-btn junk-back" type="button" data-i18n="back">&lt; BACK</button>
             <span class="junk-title"></span>
           </div>
           <div class="junk-stage"></div>
         </div>
       </div>
-      <footer class="junk-status"><span class="junk-count"></span><span>just for fun</span></footer>
+      <footer class="junk-status"><span class="junk-count"></span><span data-i18n>just for fun</span></footer>
     </section>
 
     <!-- Resume -->
     <section class="win win-resume" id="win-resume" data-win hidden aria-label="Resume">
       <header class="titlebar">
         <button class="tb-close" type="button" data-close aria-label="Close"><img src="assets/icons/close.svg" alt="" /></button>
-        <h2>RESUME.PDF</h2>
+        <h2 data-i18n>RESUME.PDF</h2>
       </header>
       <div class="toolbar">
-        <span class="pg">PAGE <b id="pdf-page">1</b> / <b id="pdf-pages">1</b></span>
+        <span class="pg"><span data-i18n>PAGE</span> <b id="pdf-page">1</b> / <b id="pdf-pages">1</b></span>
         <div class="zoom">
           <button class="sq-btn" type="button" data-zoom="-" aria-label="Zoom out">-</button>
           <output id="pdf-zoom">100%</output>
           <button class="sq-btn" type="button" data-zoom="+" aria-label="Zoom in">+</button>
         </div>
-        <a class="px-btn dl" href="assets/resume/resume.pdf" download="Angelo-Gibbs-Resume.pdf">DOWNLOAD <span data-glyph="download"></span></a>
+        <a class="px-btn dl" href="assets/resume/resume.pdf" download="Angelo-Gibbs-Resume.pdf"><span data-i18n>DOWNLOAD</span> <span data-glyph="download"></span></a>
       </div>
       <div class="viewer" id="pdf-viewer"><div id="pdf-pages-wrap"></div></div>
     </section>
@@ -199,7 +211,7 @@
         <div class="np px-box" data-r="16" data-fill="#F7D417" data-border="#7A5F00" data-gloss="#FFE766">
           <div class="np-cover"><img alt="" hidden /><div class="np-cd"></div></div>
           <div class="np-info">
-            <small>NOW PLAYING</small>
+            <small data-i18n>NOW PLAYING</small>
             <strong class="np-title"></strong>
             <div class="np-meta"><span class="np-artist"></span><span class="np-time">0:00 / 0:00</span></div>
             <div class="np-dots" role="slider" aria-label="Seek"></div>
@@ -214,7 +226,7 @@
           <label class="vol"><span>VOL</span><input type="range" min="0" max="1" step="0.01" aria-label="Volume" /></label>
         </div>
         <div class="tracklist">
-          <div class="tl-head"><span class="eq" role="img" aria-label="Now playing"><i></i><i></i><i></i><i></i></span><span>TITLE</span><span>ARTIST</span><span>TIME</span></div>
+          <div class="tl-head"><span class="eq" role="img" aria-label="Now playing"><i></i><i></i><i></i><i></i></span><span data-i18n>TITLE</span><span data-i18n>ARTIST</span><span data-i18n>TIME</span></div>
           <ol class="tl-rows"></ol>
         </div>
       </div>
@@ -223,12 +235,12 @@
     <!-- Welcome notice (shown once after boot) -->
     <section class="win win-welcome" id="win-welcome" data-win hidden aria-label="Welcome">
       <header class="titlebar">
-        <button class="tb-close" type="button" data-close aria-label="Close"><img src="assets/icons/close.svg" alt="" /></button>
-        <h2>NOTICE</h2>
+        <h2 data-i18n>NOTICE</h2>
       </header>
       <div class="win-body welcome">
         <img src="assets/icons/about.svg" alt="" />
-        <p>Welcome to <b>ANGELos</b></p>
+        <p data-i18n="welcome">Welcome to <b>ANGELos</b></p>
+        <button class="px-btn welcome-ok" type="button" data-close data-i18n="thanks">Thanks!</button>
         <i class="welcome-timer" aria-hidden="true"></i>
       </div>
     </section>
@@ -238,6 +250,7 @@
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+  <script src="js/i18n.js" defer></script>
   <script src="js/config.js" defer></script>
   <script src="js/pixel.js" defer></script>
   <script src="js/player.js" defer></script>

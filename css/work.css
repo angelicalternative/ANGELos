@@ -414,3 +414,6 @@ body.work-page { background: var(--maroon); }
   .mag-spread canvas { height: auto; width: 100%; }
   .pj-gallery.pj-gallery-ig { gap: 4px; }
 }
+
+/* EN / ES switch: above the bands, below the photo viewer. */
+.work-page .site-prefs { z-index: 100; }
