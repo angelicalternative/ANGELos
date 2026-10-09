@@ -21,6 +21,10 @@
   const arrow = dir =>
     `<svg class="px-arrow px-arrow-${dir}" viewBox="0 0 7 7" aria-hidden="true" shape-rendering="crispEdges">` +
     ARROWS[dir].map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="currentColor"/>`).join('') + '</svg>';
+  // Pixel padlock (9×11) for locked, not-yet-released projects.
+  const LOCK = '<svg class="px-lock" viewBox="0 0 9 11" aria-hidden="true" shape-rendering="crispEdges" fill="currentColor">' +
+    '<rect x="2" y="0" width="5" height="1"/><rect x="1" y="1" width="1" height="4"/><rect x="7" y="1" width="1" height="4"/>' +
+    '<rect x="0" y="5" width="9" height="6"/><rect x="4" y="7" width="1" height="2" style="fill:var(--lock-hole, #fff)"/></svg>';
   document.querySelectorAll('[data-arrow]').forEach(el => { el.outerHTML = arrow(el.dataset.arrow); });
 
   // ── Build the bands (geometry from the Figma frame, 1512×982) ──
@@ -112,12 +116,14 @@
 
   // ── Project content ──
   function build(p, k) {
-    const isEvent = p.kind === 'event';
+    const isEvent = p.kind === 'event', locked = !!p.locked;
     const facts = [['ROLE', P(p, 'role')], ['DATE', p.date], ['FORMAT', P(p, 'format')]]
       .filter(([, v]) => v);
     // Photo tiles for a gallery; empty lists show labelled placeholders.
     const tiles = (list, label, count, base) => (list || []).length
-      ? list.map((im, i) => ({ ...im, caption: P(im, 'caption') })).map((im, i) => `<figure class="reveal" style="--d:${base + i * 0.1}s" tabindex="0" role="button" aria-label="View ${label.toLowerCase()} ${i + 1} larger"><img src="${esc(im.src)}" alt="${esc(im.caption || p.title)}" loading="lazy"${im.focus ? ` style="object-position:${esc(im.focus)}"` : ''} />${im.caption ? `<figcaption>${esc(im.caption)}</figcaption>` : ''}</figure>`).join('')
+      ? list.map((im, i) => ({ ...im, caption: P(im, 'caption') })).map((im, i) => locked
+        ? `<figure class="reveal is-locked" style="--d:${base + i * 0.1}s"><img src="${esc(im.src)}" alt="" loading="lazy" /><span class="lock-badge">${LOCK}</span></figure>`
+        : `<figure class="reveal" style="--d:${base + i * 0.1}s" tabindex="0" role="button" aria-label="View ${label.toLowerCase()} ${i + 1} larger"><img src="${esc(im.src)}" alt="${esc(im.caption || p.title)}" loading="lazy"${im.focus ? ` style="object-position:${esc(im.focus)}"` : ''} />${im.caption ? `<figcaption>${esc(im.caption)}</figcaption>` : ''}</figure>`).join('')
       : Array.from({ length: count }, (_, i) => `<div class="placeholder reveal" style="--d:${base + i * 0.1}s">${T(label)} 0${i + 1}<small>assets/work/${esc(p.id)}/</small></div>`).join('');
     const imgs = tiles(p.images, 'IMAGE', 4, 0.55);
     const promo = tiles(p.promo, 'POST', 3, 0.6);
@@ -132,12 +138,21 @@
         </header>
         <div class="pj-drop"><div>
           <div class="pj-intro">
-            <p class="pj-summary reveal" style="--d:.25s">${esc(P(p, 'summary'))}</p>
+            ${locked
+              ? `<p class="pj-summary pj-locked-soon reveal" style="--d:.25s">${LOCK}${T('COMING SOON')}</p>`
+              : `<p class="pj-summary reveal" style="--d:.25s">${esc(P(p, 'summary'))}</p>`}
             <dl class="pj-facts reveal" style="--d:.35s">${facts.map(([t, v]) => `<div><dt>${esc(T(t))}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
           </div>
           <section class="pj-section reveal" style="--d:.45s">
             <h3>${esc(T(isEvent ? 'POSTER & RECAP' : 'THE ISSUE'))}</h3>
-            ${p.cover ? `
+            ${p.cover && locked ? `
+            <div class="pj-cover">
+              <div class="pj-cover-art is-locked"><img src="${esc(p.cover)}" alt="" loading="lazy" /><span class="lock-badge">${LOCK}</span></div>
+              <div class="pj-cover-side">
+                <p>${esc(P(p, 'format'))}</p>
+                <p class="pj-soon">${T('COMING SOON')}</p>
+              </div>
+            </div>` : p.cover ? `
             <div class="pj-cover">
               <a class="pj-cover-art" href="${esc(p.edition || p.pdf || p.cover)}" target="_blank" rel="noopener" aria-label="${p.edition || p.pdf ? 'See the full edition of' : 'View the poster for'} ${esc(p.title)}">
                 <img src="${esc(p.cover)}" alt="${isEvent ? 'Poster' : 'Cover'} of ${esc(p.title)}" loading="lazy" />
@@ -158,11 +173,11 @@
             <h3 class="reveal" style="--d:.5s">${T(isEvent ? 'PHOTOS' : 'BEHIND THE SCENES')}</h3>
             <div class="pj-gallery">${imgs}</div>
           </section>
-          <section class="pj-section">
+          ${locked ? '' : `<section class="pj-section">
             <h3 class="reveal" style="--d:.55s">${esc(T('INSTAGRAM & PROMO'))}</h3>
             <div class="pj-gallery pj-gallery-ig${p.promoRatio === 'auto' ? ' is-natural' : ''}" style="--cols:${p.promoCols || Math.min(3, (p.promo || []).length || 3)}${p.promoRatio && p.promoRatio !== 'auto' ? `;--ar:${esc(p.promoRatio)}` : ''}">${promo}</div>
-          </section>
-          ${(p.credits || []).length ? `<section class="pj-section reveal" style="--d:.6s"><h3>${T('CREDITS')}</h3><dl class="pj-credits">${p.credits.map(([r, nme], i) => `<div><dt>${esc((I18N.es && p.es && p.es.credits && p.es.credits[i]) || r)}</dt><dd>${esc(nme)}</dd></div>`).join('')}</dl></section>` : ''}
+          </section>`}
+          ${(p.credits || []).length && !locked ? `<section class="pj-section reveal" style="--d:.6s"><h3>${T('CREDITS')}</h3><dl class="pj-credits">${p.credits.map(([r, nme], i) => `<div><dt>${esc((I18N.es && p.es && p.es.credits && p.es.credits[i]) || r)}</dt><dd>${esc(nme)}</dd></div>`).join('')}</dl></section>` : ''}
           ${(p.links || []).length ? `<section class="pj-section reveal" style="--d:.6s"><h3>${T('LINKS')}</h3><div class="pj-links">${p.links.map(l => `<a class="pj-btn" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)}${arrow('ne')}</a>`).join('')}</div></section>` : ''}
           <footer class="pj-foot reveal" style="--d:.7s">
             <button class="pj-btn" type="button" data-close>${arrow('left')}${T('ALL WORK')}</button>
@@ -241,7 +256,7 @@
     if (go) return open(go.dataset.goto);
     const m = e.target.closest('[data-mag]');
     if (m) return flip(m.closest('.mag'), m.dataset.mag === 'next' ? 1 : -1);
-    const fig = e.target.closest('.pj-gallery figure');
+    const fig = e.target.closest('.pj-gallery figure:not(.is-locked)');
     if (fig) openLightbox([...fig.parentElement.querySelectorAll('figure')], fig);
   });
 
