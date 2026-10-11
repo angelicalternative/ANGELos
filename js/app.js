@@ -56,6 +56,12 @@
     });
     bar.addEventListener('pointerup', () => { d = null; });
     $$('[data-close]', w).forEach(b => b.addEventListener('click', () => Win.close(w.id.slice(4))));
+    // ⓘ in the title bar: shows a short note about what the window is.
+    $$('[data-info]', w).forEach(b => b.addEventListener('click', () => {
+      const note = document.getElementById(b.getAttribute('aria-controls'));
+      note.hidden = !note.hidden;
+      b.setAttribute('aria-expanded', String(!note.hidden));
+    }));
   });
 
   document.addEventListener('click', e => {

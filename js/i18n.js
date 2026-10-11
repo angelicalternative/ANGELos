@@ -24,6 +24,7 @@
     'CONTACT ME!': '¡CONTÁCTAME!', lead: 'Hagamos algo juntos.', 'EMAIL ME': 'ESCRÍBEME', 'SOCIALS': 'REDES',
     // Globe
     'LOADING MAP…': 'CARGANDO MAPA…', 'DRAG TO SPIN': 'ARRASTRA PARA GIRAR', 'COUNTRIES VISITED': 'PAÍSES VISITADOS',
+    'globeInfo': 'Todos los países que he visitado, en un globo que gira. El amarillo marca dónde he estado, y los cuadritos señalan lugares demasiado pequeños para verse en el mapa. Arrastra el globo para girarlo, o toca un país de la lista para encontrarlo.',
     'COUNTRIES': 'PAÍSES', 'TERRITORIES': 'TERRITORIOS', 'OF': 'DE', 'states': 'estados', 'places': 'lugares', 'territory': 'territorio',
     'Couldn’t load the map (offline?)': 'No se pudo cargar el mapa (¿sin internet?)',
     // Minesweeper

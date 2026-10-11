@@ -149,6 +149,22 @@ img { image-rendering: pixelated; }
 .tb-min { border-left: 4px solid var(--blue); }
 .tb-min i { width: 20px; height: 6px; margin-top: 14px; background: var(--blue); }
 .win-body { overflow: auto; }
+.tb-info {
+  flex: none;
+  width: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-left: 4px solid var(--blue);
+  color: var(--blue);
+}
+.tb-info svg { width: 8px; height: 18px; display: block; }
+.tb-info[aria-expanded="true"] { background: var(--blue); color: #fff; }
+.tb-info:focus-visible { outline: 2px dashed var(--blue); outline-offset: -6px; }
+.win-info { flex: none; padding: 12px 18px; background: #fff; border-bottom: 4px solid var(--blue); }
+.win-info p { margin: 0; font-family: var(--serif); font-size: 19px; line-height: 1.3; }
 
 .px-btn {
   display: inline-flex;
@@ -355,7 +371,7 @@ img { image-rendering: pixelated; }
 .globe-loading { position: absolute; inset: 0 0 auto; margin: 140px 0 0; color: var(--blue); font-size: 14px; }
 .globe-hint { margin: 8px 0 0; color: #555; font-size: 12px; }
 .globe-side { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.globe-side small { color: var(--blue); font-size: 14px; }
+.globe-side small { color: var(--blue); font-family: var(--serif); font-size: 22px; line-height: 1.1; }
 .globe-count { font-size: 96px; font-weight: 400; line-height: .95; letter-spacing: -.02em; }
 .globe-of { font-size: 13px; color: #555; }
 .globe-bar { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; margin: 10px 0 14px; }

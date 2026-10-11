@@ -127,7 +127,9 @@
       <header class="titlebar">
         <button class="tb-close" type="button" data-close aria-label="Close"><img src="assets/icons/close.svg" alt="" /></button>
         <h2 data-i18n>GLOBE TRACKER</h2>
+        <button class="tb-info" type="button" data-info aria-label="What is this?" aria-expanded="false" aria-controls="globe-info"><svg viewBox="0 0 4 9" aria-hidden="true" shape-rendering="crispEdges" fill="currentColor"><rect x="1" y="0" width="2" height="2"/><rect x="0" y="3" width="3" height="1"/><rect x="1" y="4" width="2" height="4"/><rect x="0" y="8" width="4" height="1"/></svg></button>
       </header>
+      <div class="win-info" id="globe-info" hidden><p data-i18n="globeInfo">Every country I’ve been to, on a spinning globe. Yellow means I’ve been there, and little squares mark places too small to see on the map. Drag the globe to spin it, or tap a country in the list to find it.</p></div>
       <div class="win-body globe">
         <div class="globe-stage">
           <canvas class="globe-canvas" width="132" height="132" aria-label="Spinning globe with visited countries in yellow"></canvas>
