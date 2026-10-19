@@ -22,8 +22,8 @@ function PhotoGallery(win, photos) {
     i = (k + photos.length) % photos.length;
     const p = photos[i];
     img.src = p.src;
-    img.alt = p.caption || `Photo ${i + 1}`;
-    cap.textContent = p.caption || '';
+    img.alt = I18N.pick(p, 'caption') || `Photo ${i + 1}`;
+    cap.textContent = I18N.pick(p, 'caption') || '';
     // Location tag: only for photos that have a location in config.js.
     loc.hidden = !p.location;
     loc.innerHTML = p.location ? `${PIN}<span>${I18N.country(p.location)}</span>` : '';
