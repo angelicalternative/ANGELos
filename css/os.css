@@ -889,5 +889,6 @@ html[data-cvd] .mw-info a, html[data-cvd] .contact-addr { text-decoration: under
   .globe-loading { margin-top: 120px; }
   .globe-count { font-size: 64px; }
   .globe-list { flex: none; max-height: 220px; font-size: 17px; }
+  .mini:active { cursor: default; }
   .mini { right: auto; left: 50%; bottom: 12px; transform: translateX(-50%) scale(.72); transform-origin: bottom center; }
 }

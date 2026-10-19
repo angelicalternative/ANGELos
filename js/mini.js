@@ -88,8 +88,9 @@ function MiniPlayer(root, player, { onExpand }) {
     expand: () => onExpand(),
   };
 
-  // Drag anywhere that isn't a control; click controls.
+  // Drag anywhere that isn't a control; click controls. On phones it stays put.
   let drag = null;
+  const phone = matchMedia('(max-width: 760px)');
   root.addEventListener('pointerdown', e => {
     const act = e.target.closest('[data-act]');
     if (act && act.dataset.act === 'seek') {
@@ -97,7 +98,7 @@ function MiniPlayer(root, player, { onExpand }) {
       player.seek((e.clientX - r.left) / r.width);
       return;
     }
-    if (act) return;
+    if (act || phone.matches) return;
     const box = root.getBoundingClientRect();
     drag = { dx: e.clientX - box.left, dy: e.clientY - box.top, moved: false, id: e.pointerId };
     root.setPointerCapture(e.pointerId);
