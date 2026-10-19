@@ -49,6 +49,8 @@ window.SITE = {
   // Photo gallery, in order (newest first). Put images in assets/photos.
   // Add location: 'Country' to show a little location tag under the caption.
   photos: [
+    { src: 'assets/photos/cooking.png', caption: 'Cooking', location: 'Thailand', es: { caption: 'Cocinando' } },
+    { src: 'assets/photos/music.png', caption: 'Music', location: 'Indonesia', es: { caption: 'Música' } },
     { src: 'assets/photos/player-select.png', caption: 'Video games', location: 'Singapore', es: { caption: 'Videojuegos' } },
     { src: 'assets/photos/ultraviolence.png', caption: 'Ultraviolence', location: 'Singapore' },
     { src: 'assets/photos/honey.png', caption: 'Slow Boat', location: 'Singapore' },
