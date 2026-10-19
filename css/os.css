@@ -280,6 +280,13 @@ img { image-rendering: pixelated; }
 }
 .gal-img { display: block; width: 100%; height: min(420px, 52vh); object-fit: contain; background: #222; }
 .gal-caption { min-height: 1.3em; margin-top: 8px; font-family: var(--serif); font-size: 20px; text-align: center; }
+.gal-loc {
+  display: flex; align-items: center; justify-content: center; gap: 6px; width: fit-content;
+  margin: 6px auto 0; padding: 3px 10px 2px; background: var(--blue); color: #fff;
+  font-family: var(--ui); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+}
+.gal-loc[hidden] { display: none; }
+.gal-loc svg { width: 7px; height: 9px; display: block; }
 .gal-empty { flex: 1; padding: 60px 0; text-align: center; }
 .gal-strip {
   display: flex;

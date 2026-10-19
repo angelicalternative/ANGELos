@@ -3,8 +3,13 @@
 // ── Photos ──────────────────────────────────────────────────
 function PhotoGallery(win, photos) {
   const $ = sel => win.querySelector(sel);
-  const img = $('.gal-img'), cap = $('.gal-caption'), count = $('.gal-count'), strip = $('.gal-strip');
+  const img = $('.gal-img'), cap = $('.gal-caption'), loc = $('.gal-loc'), count = $('.gal-count'), strip = $('.gal-strip');
   let i = 0;
+  // Pixel map pin (7×9).
+  const PIN = '<svg viewBox="0 0 7 9" aria-hidden="true" shape-rendering="crispEdges" fill="currentColor">' +
+    '<rect x="2" y="0" width="3" height="1"/><rect x="1" y="1" width="5" height="1"/><rect x="0" y="2" width="2" height="3"/><rect x="5" y="2" width="2" height="3"/>' +
+    '<rect x="2" y="2" width="3" height="1"/><rect x="2" y="4" width="3" height="1"/><rect x="1" y="5" width="5" height="1"/><rect x="2" y="6" width="3" height="1"/><rect x="3" y="7" width="1" height="2"/></svg>';
+  I18N.on(() => show(i));
 
   if (!photos.length) {
     $('.gal-view').innerHTML = '<p class="gal-empty">No photos yet — add some in js/config.js</p>';
@@ -19,6 +24,9 @@ function PhotoGallery(win, photos) {
     img.src = p.src;
     img.alt = p.caption || `Photo ${i + 1}`;
     cap.textContent = p.caption || '';
+    // Location tag: only for photos that have a location in config.js.
+    loc.hidden = !p.location;
+    loc.innerHTML = p.location ? `${PIN}<span>${I18N.country(p.location)}</span>` : '';
     count.textContent = `${String(i + 1).padStart(2, '0')} / ${String(photos.length).padStart(2, '0')}`;
     strip.querySelectorAll('.gal-thumb').forEach(t => t.classList.toggle('is-current', +t.dataset.i === i));
     strip.querySelector(`[data-i="${i}"]`).scrollIntoView({ block: 'nearest', inline: 'nearest' });

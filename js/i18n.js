@@ -57,7 +57,7 @@
     Argentina: 'Argentina', Bahamas: 'Bahamas', Barbados: 'Barbados', Brazil: 'Brasil', Chile: 'Chile', Colombia: 'Colombia',
     'Dominican Republic': 'República Dominicana', Ecuador: 'Ecuador', Jamaica: 'Jamaica', Mexico: 'México', Panama: 'Panamá',
     Paraguay: 'Paraguay', Peru: 'Perú', 'United States': 'Estados Unidos', Uruguay: 'Uruguay', Indonesia: 'Indonesia',
-    Israel: 'Israel', Japan: 'Japón', Palestine: 'Palestina', Singapore: 'Singapur', Turkey: 'Turquía', Albania: 'Albania',
+    Israel: 'Israel', Japan: 'Japón', Palestine: 'Palestina', Singapore: 'Singapur', Thailand: 'Tailandia', Turkey: 'Turquía', Albania: 'Albania',
     Austria: 'Austria', 'Bosnia and Herzegovina': 'Bosnia y Herzegovina', Croatia: 'Croacia', Denmark: 'Dinamarca',
     Estonia: 'Estonia', Finland: 'Finlandia', France: 'Francia', Germany: 'Alemania', Hungary: 'Hungría', Iceland: 'Islandia',
     Italy: 'Italia', Monaco: 'Mónaco', Montenegro: 'Montenegro', Netherlands: 'Países Bajos', Norway: 'Noruega',

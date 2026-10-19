@@ -47,15 +47,16 @@ window.SITE = {
   ],
 
   // Photo gallery, in order. Put images in assets/photos.
+  // Add location: 'Country' to show a little location tag under the caption.
   photos: [
     { src: 'assets/photos/australia.png', caption: 'Australia' },
     { src: 'assets/photos/face-a.png', caption: 'FACE A' },
     { src: 'assets/photos/sunset.png', caption: 'Sunset', es: { caption: 'Atardecer' } },
-    { src: 'assets/photos/player-select.png', caption: 'Player select' },
-    { src: 'assets/photos/ultraviolence.png', caption: 'Ultraviolence' },
-    { src: 'assets/photos/honey.png', caption: 'Honey' },
-    { src: 'assets/photos/club-street.png', caption: 'Club Street, Singapore' },
-    { src: 'assets/photos/meerkats.png', caption: 'Meerkats', es: { caption: 'Suricatas' } },
+    { src: 'assets/photos/player-select.png', caption: 'Player select', location: 'Singapore' },
+    { src: 'assets/photos/ultraviolence.png', caption: 'Ultraviolence', location: 'Singapore' },
+    { src: 'assets/photos/honey.png', caption: 'Honey', location: 'Singapore' },
+    { src: 'assets/photos/club-street.png', caption: 'Club Street', location: 'Singapore' },
+    { src: 'assets/photos/meerkats.png', caption: 'Meerkats', location: 'Thailand', es: { caption: 'Suricatas' } },
   ],
 
   // Junk folder: creative odds and ends, just for fun. Put files in assets/junk.
