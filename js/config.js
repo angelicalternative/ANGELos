@@ -51,6 +51,11 @@ window.SITE = {
     { src: 'assets/photos/australia.png', caption: 'Australia' },
     { src: 'assets/photos/face-a.png', caption: 'FACE A' },
     { src: 'assets/photos/sunset.png', caption: 'Sunset', es: { caption: 'Atardecer' } },
+    { src: 'assets/photos/player-select.png', caption: 'Player select' },
+    { src: 'assets/photos/ultraviolence.png', caption: 'Ultraviolence' },
+    { src: 'assets/photos/honey.png', caption: 'Honey' },
+    { src: 'assets/photos/club-street.png', caption: 'Club Street, Singapore' },
+    { src: 'assets/photos/meerkats.png', caption: 'Meerkats', es: { caption: 'Suricatas' } },
   ],
 
   // Junk folder: creative odds and ends, just for fun. Put files in assets/junk.
