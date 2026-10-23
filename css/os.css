@@ -379,8 +379,8 @@ img { image-rendering: pixelated; }
 .globe-hint { margin: 8px 0 0; color: #555; font-size: 12px; }
 .globe-side { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .globe-side small { color: var(--blue); font-family: var(--serif); font-size: 22px; line-height: 1.1; }
-.globe-count { font-size: 96px; font-weight: 400; line-height: .95; letter-spacing: -.02em; }
-.globe-of { font-size: 13px; color: #555; }
+.globe-count { font-family: var(--serif); font-size: 96px; font-weight: 400; line-height: .95; letter-spacing: -.02em; }
+.globe-of { font-family: 'W95FA', monospace; font-size: 14px; color: #555; }
 .globe-bar { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; margin: 10px 0 14px; }
 .globe-bar i { height: 12px; background: #C8C8C8; }
 .globe-bar i.on { background: var(--yellow); box-shadow: inset 0 -3px 0 var(--yellow-dk); }
