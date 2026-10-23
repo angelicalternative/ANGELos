@@ -85,7 +85,7 @@ window.SITE = {
       'Texas', 'Virginia', 'Washington', 'West Virginia', 'Wyoming'] },
     'Uruguay',
     // Asia
-    { name: 'China', places: ['Hong Kong'] }, 'Indonesia', 'Israel', 'Japan', 'Palestine', 'Singapore', 'Thailand', 'Turkey',
+    { name: 'China', places: ['Hong Kong'] }, 'Indonesia', 'Israel', 'Japan', 'Malaysia', 'Palestine', 'Singapore', 'Thailand', 'Turkey',
     // Europe
     'Albania', 'Austria', 'Bosnia and Herzegovina', 'Croatia', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Hungary',
     'Iceland', 'Italy', 'Monaco', 'Montenegro', 'Netherlands', 'Norway', 'Portugal', 'Serbia', 'Spain', 'Sweden',
