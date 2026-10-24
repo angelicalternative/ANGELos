@@ -328,8 +328,9 @@ function GlobeTracker(win, countryList, territoryList = []) {
   });
 
   win.addEventListener('win:open', start);
-  // 50 countries! A burst of pixel confetti every time the window opens.
-  win.addEventListener('win:open', () => confetti(win));
+  // 50 countries! A burst of pixel confetti every time the window opens, until December.
+  const CONFETTI_UNTIL = new Date(2026, 11, 1); // 1 Dec 2026, visitor's local time
+  win.addEventListener('win:open', () => { if (new Date() < CONFETTI_UNTIL) confetti(win); });
 }
 
 // ── Minesweeper ─────────────────────────────────────────────
