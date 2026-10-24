@@ -102,6 +102,42 @@ function JunkFolder(win, items) {
   win.addEventListener('win:close', back);
 }
 
+// ── Pixel confetti ──────────────────────────────────────────
+// Square bits in the site's colours fall over a window, then the canvas removes itself.
+function confetti(win) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  win.querySelector('.confetti')?.remove();
+  const PX = 3; // one confetti pixel = 3 screen pixels, so it stays chunky
+  const c = document.createElement('canvas');
+  c.className = 'confetti';
+  c.setAttribute('aria-hidden', 'true');
+  win.appendChild(c);
+  const W = Math.ceil(win.clientWidth / PX), H = Math.ceil(win.clientHeight / PX);
+  c.width = W; c.height = H;
+  const ctx = c.getContext('2d');
+  const COLORS = ['#F7D417', '#1803BB', '#E52222', '#00A651', '#FF8DE2', '#FFFFFF'];
+  const bits = Array.from({ length: Math.round(W * 0.9) }, () => ({
+    x: Math.random() * W, y: -Math.random() * H * 0.6 - 4,
+    vx: (Math.random() - 0.5) * 0.6, vy: Math.random() * 0.6 + 0.4,
+    s: Math.random() < 0.3 ? 3 : 2, flip: Math.random() * 6, color: COLORS[Math.random() * COLORS.length | 0],
+  }));
+  const t0 = performance.now(), LIFE = 2600;
+  (function frame(now) {
+    const t = now - t0;
+    if (t > LIFE || win.hidden) return c.remove();
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalAlpha = t > LIFE - 500 ? (LIFE - t) / 500 : 1;
+    for (const b of bits) {
+      b.vy += 0.04; b.x += b.vx + Math.sin((t / 180) + b.flip) * 0.3; b.y += b.vy; b.flip += 0.25;
+      // Flutter: the bit turns edge-on every so often, like paper spinning.
+      const w = Math.abs(Math.cos(b.flip)) < 0.35 ? 1 : b.s;
+      ctx.fillStyle = b.color;
+      ctx.fillRect(Math.round(b.x), Math.round(b.y), w, b.s);
+    }
+    requestAnimationFrame(frame);
+  })(t0);
+}
+
 // ── Globe tracker ───────────────────────────────────────────
 function GlobeTracker(win, countryList, territoryList = []) {
   const $ = sel => win.querySelector(sel);
@@ -292,6 +328,8 @@ function GlobeTracker(win, countryList, territoryList = []) {
   });
 
   win.addEventListener('win:open', start);
+  // 50 countries! A burst of pixel confetti every time the window opens.
+  win.addEventListener('win:open', () => confetti(win));
 }
 
 // ── Minesweeper ─────────────────────────────────────────────

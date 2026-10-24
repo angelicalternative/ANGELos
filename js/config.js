@@ -77,7 +77,7 @@ window.SITE = {
   // territory: true adds a small “(territory)” note under the name.
   countries: [
     // Americas
-    'Argentina', { name: 'Aruba', territory: true }, 'Bahamas', 'Barbados',
+    'Argentina', 'Aruba', 'Bahamas', 'Barbados',
     { name: 'Brazil', places: ['Rio de Janeiro', 'São Paulo'] },
     { name: 'Cayman Islands', territory: true }, 'Chile', 'Colombia', 'Dominican Republic', 'Ecuador', 'Jamaica', 'Mexico', 'Panama', 'Paraguay', 'Peru', { name: 'Turks and Caicos Islands', territory: true },
     { name: 'United States', places: ['Alaska', 'Arizona', 'California', 'Colorado', 'Florida', 'Georgia', 'Hawaii', 'Maine',
