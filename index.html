@@ -25,6 +25,12 @@
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
   <link rel="stylesheet" href="css/os.css?v=20261102b" />
   <script>
+    // Keep the address clean: angelogibbs.com/index.html shows as angelogibbs.com/.
+    if (/\/index\.html$/.test(location.pathname) && location.protocol !== 'file:') {
+      history.replaceState(null, '', location.pathname.replace(/index\.html$/, '') + location.search + location.hash);
+    }
+  </script>
+  <script>
     // Skip the boot screen + welcome if this browser saw them in the last 7 days.
     // Add ?boot to the URL to force it (handy for testing).
     try {
