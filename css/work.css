@@ -438,3 +438,6 @@ body.work-page { background: var(--maroon); }
 
 /* EN / ES switch: above the bands, below the photo viewer. */
 .work-page .site-prefs { z-index: 100; }
+
+/* Inside a project, selected text flips that project's colours: its colour on its ink. */
+.band ::selection { background: var(--ink, #000); color: var(--c, #fff); }

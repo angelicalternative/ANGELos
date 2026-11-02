@@ -36,6 +36,8 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
+/* Text selection: a yellow highlighter with ANGELos blue text instead of the browser default. */
+::selection { background: var(--yellow); color: var(--blue); text-shadow: none; }
 body {
   background: #6f8fb5;
   font-family: var(--ui);
