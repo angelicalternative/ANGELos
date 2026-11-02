@@ -381,6 +381,15 @@ img { image-rendering: pixelated; }
 .globe-side { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .globe-side small { color: var(--blue); font-family: var(--serif); font-size: 22px; line-height: 1.1; }
 .globe-count { font-family: var(--serif); font-size: 96px; font-weight: 400; line-height: .95; letter-spacing: -.02em; }
+.globe-count.is-milestone {
+  /* Special milestone (50 countries): the number cycles through a rainbow. */
+  background: linear-gradient(90deg, #E52222, #FF8A00, #F7D417, #00A651, #1E90FF, #1803BB, #B04BE0, #FF8DE2, #E52222) 0 0 / 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(3px 3px 0 #000);
+  animation: rainbow 2.4s steps(32) infinite;
+}
+@keyframes rainbow { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .globe-count.is-milestone { animation: none; } }
 .globe-of { font-family: 'W95FA', monospace; font-size: 14px; color: #555; }
 .globe-bar { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; margin: 10px 0 14px; }
 .globe-bar i { height: 12px; background: #C8C8C8; }

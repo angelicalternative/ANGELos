@@ -147,6 +147,8 @@ function GlobeTracker(win, countryList, territoryList = []) {
 
   // Counter, progress bar and list don't need the map, so draw them right away.
   $('.globe-count').textContent = String(n).padStart(2, '0');
+  // Every 50 countries is a milestone: the number goes rainbow.
+  $('.globe-count').classList.toggle('is-milestone', n > 0 && n % 50 === 0);
   const SEG = 24;
   $('.globe-bar').innerHTML = Array.from({ length: SEG }, (_, k) => `<i class="${k < Math.round((n / TOTAL) * SEG) ? 'on' : ''}"></i>`).join('');
   const t = I18N.t, C = I18N.country;
