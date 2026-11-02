@@ -147,8 +147,10 @@ function GlobeTracker(win, countryList, territoryList = []) {
 
   // Counter, progress bar and list don't need the map, so draw them right away.
   $('.globe-count').textContent = String(n).padStart(2, '0');
-  // Every 50 countries is a milestone: the number goes rainbow.
-  $('.globe-count').classList.toggle('is-milestone', n > 0 && n % 50 === 0);
+  // Celebrating 50 countries: rainbow number + confetti until December, then rainbow again at every 50.
+  const CELEBRATE_UNTIL = new Date(2026, 11, 1); // 1 Dec 2026, visitor's local time
+  const celebrating = () => new Date() < CELEBRATE_UNTIL;
+  $('.globe-count').classList.toggle('is-milestone', n > 0 && (n % 50 === 0 || celebrating()));
   const SEG = 24;
   $('.globe-bar').innerHTML = Array.from({ length: SEG }, (_, k) => `<i class="${k < Math.round((n / TOTAL) * SEG) ? 'on' : ''}"></i>`).join('');
   const t = I18N.t, C = I18N.country;
@@ -331,8 +333,7 @@ function GlobeTracker(win, countryList, territoryList = []) {
 
   win.addEventListener('win:open', start);
   // 50 countries! A burst of pixel confetti every time the window opens, until December.
-  const CONFETTI_UNTIL = new Date(2026, 11, 1); // 1 Dec 2026, visitor's local time
-  win.addEventListener('win:open', () => { if (new Date() < CONFETTI_UNTIL) confetti(win); });
+  win.addEventListener('win:open', () => { if (celebrating()) confetti(win); });
 }
 
 // ── Minesweeper ─────────────────────────────────────────────
