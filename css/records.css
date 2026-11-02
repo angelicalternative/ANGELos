@@ -5,8 +5,7 @@
   --ar-cream: #FCE2B0; --ar-cream-dk: #F2CF95; --ar-gold: #F2C230; --ar-plum: #8E6A9C; --ar-ink: #4A2512;
 }
 .ar { position: relative; flex: 1; display: flex; flex-direction: column; background: var(--ar-dark); outline: none; overflow: auto; }
-.ar:has(> .ar-screen:not([hidden])) { min-height: 600px; }
-.ar-view { position: relative; overflow: hidden; flex: none; background: #2A1405; }
+.ar-view { position: relative; overflow: hidden; flex: 1; min-height: 0; background: #2A1405; }
 .ar-stage { position: absolute; left: 0; top: 0; width: 320px; height: 240px; transform-origin: 0 0; image-rendering: pixelated; }
 .ar-stage img, .ar-screen img { image-rendering: pixelated; }
 .ar-scene { position: absolute; inset: 0; overflow: hidden; }
@@ -241,7 +240,6 @@ html[data-cvd] .ar-star { display: block; }
   html[data-cvd] .ar-star, .ar-star { display: block; } /* no glint, so always show the star */
 }
 @media (max-width: 760px) {
-  .ar:has(> .ar-screen:not([hidden])) { min-height: min(620px, calc(100vh - 90px)); }
   .ar-talk { grid-template-columns: 60px 1fr; gap: 10px; margin: 8px 8px 0; padding: 8px 10px 8px 8px; min-height: 60px; }
   .ar-face { width: 60px; height: 60px; padding: 3px 6px 0; }
   .ar-text { font-size: 17px; }
@@ -270,7 +268,7 @@ html.ar-busy, html.ar-busy * { cursor: url('../assets/icons/cursor-busy.svg') 0 
 
 .ar-screen.is-blank, .ar-screen.is-pub, .ar-screen.is-press, .ar-screen.is-wiki { background: #D6D6D6; }
 .ar-skip {
-  position: absolute; right: 16px; top: 14px; z-index: 6; padding: 3px 10px;
+  position: absolute; right: 16px; bottom: 16px; z-index: 6; padding: 3px 10px;
   background: #C0C0C0; border: 2px solid; border-color: #fff #404040 #404040 #fff; font: 14px/1.2 var(--ui); color: #000;
 }
 .ar-skip:active { border-color: #404040 #fff #fff #404040; }
@@ -354,7 +352,8 @@ html.ar-busy, html.ar-busy * { cursor: url('../assets/icons/cursor-busy.svg') 0 
 /* ── The page ─────────────────────────────────────────── */
 html:has(.records-page), .records-page { height: auto; min-height: 100%; }
 .records-page { overflow: auto; background: #1E0F06; color: var(--ar-cream); }
-.arp { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 56px 16px 24px; box-sizing: border-box; }
+/* The game fills the whole browser window. */
+.arp { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
 .ar-back-link {
   position: fixed; left: 16px; top: 14px; z-index: 20; display: inline-flex; align-items: center; gap: 8px;
   padding: 4px 12px; background: #C0C0C0; border: 2px solid; border-color: #fff #404040 #404040 #fff;
@@ -363,9 +362,10 @@ html:has(.records-page), .records-page { height: auto; min-height: 100%; }
 .ar-back-link:active { border-color: #404040 #fff #fff #404040; }
 .ar-back-link:focus-visible { outline: 2px dashed #FFF3C4; outline-offset: 2px; }
 
-/* The game monitor: a chunky beige CRT bezel around the game */
-.ar-monitor { width: min(720px, 100%); padding: 18px; background: #D8CBB0; border: 4px solid #000; border-radius: 18px; box-shadow: inset 0 -6px 0 #B8A888, inset 0 4px 0 #F2E8D2, 10px 10px 0 #000; box-sizing: border-box; }
-.ar { position: relative; display: flex; flex-direction: column; background: var(--ar-dark); outline: none; overflow: hidden; border: 4px solid #000; border-radius: 10px; }
+.ar-monitor { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.ar-monitor[hidden] { display: none; }
+.ar { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--ar-dark); outline: none; overflow: hidden; }
+.ar-talk, .ar-controls, .ar-nowplaying { width: min(960px, calc(100% - 20px)); align-self: center; box-sizing: border-box; }
 
 /* The fake desktop for the intro: sky-to-desert wallpaper and one shortcut icon */
 .ar-desk {
@@ -412,9 +412,6 @@ html:has(.records-page), .records-page { height: auto; min-height: 100%; }
   .ar-desk-hint, .ar-np-text .ar-vinyl { animation: none; }
 }
 @media (max-width: 760px) {
-  .arp { padding: 52px 8px 12px; justify-content: flex-start; }
-  .ar-monitor { padding: 8px; border-radius: 12px; box-shadow: inset 0 -4px 0 #B8A888, 6px 6px 0 #000; }
-  .ar { border-width: 3px; border-radius: 6px; }
   .ar-desk-icon { left: 50%; top: 30%; transform: translateX(-50%); }
   .ar-desk-art { width: 88px; height: 88px; }
   .ar-nowplaying { margin: 0 8px 10px; font-size: 13px; }
@@ -427,4 +424,12 @@ html:has(.records-page), .records-page { height: auto; min-height: 100%; }
 @media (max-width: 760px) {
   .records-page .site-prefs { right: 8px; top: 10px; }
   .ar-back-link { left: 8px; top: 10px; }
+}
+
+/* Big screens: the menus and pop-ups grow with the full-screen game */
+@media (min-width: 1200px) and (min-height: 800px) {
+  .ar-screen > :not(.ar-skip):not(.ar-wiki-loading) { zoom: 1.4; }
+  .ar-text { font-size: 24px; }
+  .ar-talk { grid-template-columns: 92px 1fr; min-height: 92px; }
+  .ar-face { width: 92px; height: 92px; }
 }

@@ -200,14 +200,14 @@
   }
 
   // ── Stage scaling: whole pixels on wide screens, fit-to-width on phones ──
+  // The 320×240 scene scales up as big as fits the space above the dialogue box, centred.
   function fit() {
-    const w = view.clientWidth;
-    if (!w) return;
-    const byH = Math.max(1, Math.floor((window.innerHeight - 260) / 240));
-    const k = w >= 640 ? Math.min(3, Math.floor(w / 320), byH) : w / 320;
+    const w = view.clientWidth, h = view.clientHeight;
+    if (!w || !h) return;
+    const k = Math.min(w / 320, h / 240);
     stage.style.transform = `scale(${k})`;
-    stage.style.left = Math.max(0, (w - 320 * k) / 2) + 'px';
-    view.style.height = 240 * k + 'px';
+    stage.style.left = (w - 320 * k) / 2 + 'px';
+    stage.style.top = (h - 240 * k) / 2 + 'px';
   }
   if ('ResizeObserver' in window) new ResizeObserver(fit).observe(view);
   window.addEventListener('resize', fit);
