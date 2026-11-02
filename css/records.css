@@ -433,3 +433,16 @@ html:has(.records-page), .records-page { height: auto; min-height: 100%; }
   .ar-talk { grid-template-columns: 92px 1fr; min-height: 92px; }
   .ar-face { width: 92px; height: 92px; }
 }
+
+/* Production logo on the splash */
+.ar-pub-logo { display: block; width: min(560px, 78vw); height: auto; }
+.ar-pub .ar-sparkle { top: -6px; }
+
+/* Sound on/off */
+.ar-sound {
+  position: fixed; z-index: 20; top: 14px; right: 150px; padding: 3px 10px;
+  background: #C0C0C0; border: 2px solid; border-color: #fff #404040 #404040 #fff; font: 14px/1.2 var(--ui); color: #000;
+}
+.ar-sound:active { border-color: #404040 #fff #fff #404040; }
+.ar-sound[aria-pressed="false"] { color: #555; }
+@media (max-width: 760px) { .ar-sound { top: 10px; right: 150px; padding: 3px 8px; font-size: 13px; } }

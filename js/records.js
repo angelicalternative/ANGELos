@@ -107,6 +107,98 @@
     np.querySelector('.ar-np-stop').textContent = '■ ' + T('Stop');
   }
 
+  // ── Cute sound effects, made in the browser (no files). Off until the first tap/click. ──
+  const SFX = (() => {
+    const KEY_S = 'angel-records-sound';
+    let on = true;
+    try { on = localStorage.getItem(KEY_S) !== 'off'; } catch (e) {}
+    let ctx = null, out = null, pad = null;
+    const ready = () => {
+      if (!on) return null;
+      if (!ctx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        ctx = new AC();
+        out = ctx.createGain(); out.gain.value = 0.9;
+        // A little room: a soft feedback echo makes everything feel dreamy.
+        const echo = ctx.createDelay(); echo.delayTime.value = 0.23;
+        const fb = ctx.createGain(); fb.gain.value = 0.28;
+        const wet = ctx.createGain(); wet.gain.value = 0.35;
+        out.connect(ctx.destination); out.connect(echo); echo.connect(fb); fb.connect(echo); echo.connect(wet); wet.connect(ctx.destination);
+      }
+      if (ctx.state === 'suspended') ctx.resume();
+      return ctx;
+    };
+    const hz = n => 440 * Math.pow(2, (n - 69) / 12); // MIDI note → frequency
+    // One soft "bell" note: sine + a quiet octave sparkle, quick attack, gentle fade.
+    function note(n, at = 0, len = 0.35, vol = 0.16, type = 'sine') {
+      const c = ready(); if (!c) return;
+      const t = c.currentTime + at;
+      [[1, vol], [2, vol * 0.18]].forEach(([mul, v]) => {
+        const o = c.createOscillator(), g = c.createGain();
+        o.type = type; o.frequency.value = hz(n) * mul;
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0008, t + len);
+        o.connect(g); g.connect(out); o.start(t); o.stop(t + len + 0.05);
+      });
+    }
+    // A warm pad: detuned soft voices through a low-pass filter, swelling in slowly.
+    const CHORDS = [[60, 64, 67, 71], [57, 60, 64, 67], [65, 69, 72, 76], [62, 65, 69, 72]]; // Cmaj7, Am7, Fmaj7, Dm7
+    function padStart() {
+      const c = ready(); if (!c || pad) return;
+      const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900; lp.Q.value = 0.4;
+      const g = c.createGain(); g.gain.setValueAtTime(0, c.currentTime); g.gain.linearRampToValueAtTime(0.11, c.currentTime + 1.6);
+      lp.connect(g); g.connect(out);
+      const voices = CHORDS[0].flatMap(n => [-6, 6].map(d => {
+        const o = c.createOscillator(); o.type = 'triangle'; o.frequency.value = hz(n - 12); o.detune.value = d;
+        const vg = c.createGain(); vg.gain.value = 0.12; o.connect(vg); vg.connect(lp); o.start(); return o;
+      }));
+      // A slow wobble on the filter so the pad breathes.
+      const lfo = c.createOscillator(), lg = c.createGain(); lfo.frequency.value = 0.18; lg.gain.value = 260; lfo.connect(lg); lg.connect(lp.frequency); lfo.start();
+      pad = { g, voices, lfo, step: 0 };
+    }
+    function padNext() {
+      if (!pad || !ctx) return;
+      pad.step = (pad.step + 1) % CHORDS.length;
+      const ch = CHORDS[pad.step], t = ctx.currentTime;
+      pad.voices.forEach((o, i) => o.frequency.setTargetAtTime(hz(ch[i >> 1] - 12), t, 0.35));
+    }
+    function padStop() {
+      if (!pad || !ctx) return;
+      const p = pad, t = ctx.currentTime; pad = null;
+      p.g.gain.cancelScheduledValues(t); p.g.gain.setValueAtTime(p.g.gain.value, t); p.g.gain.linearRampToValueAtTime(0, t + 1.2);
+      setTimeout(() => { p.voices.forEach(o => o.stop()); p.lfo.stop(); }, 1400);
+    }
+    return {
+      get on() { return on; },
+      toggle() {
+        on = !on;
+        try { localStorage.setItem(KEY_S, on ? 'on' : 'off'); } catch (e) {}
+        if (!on) { padStop(); if (ctx) ctx.suspend(); } else { ready(); note(76, 0, 0.25, 0.12); }
+        return on;
+      },
+      wake: () => ready(),
+      tap: () => note(84, 0, 0.12, 0.08),                                  // tiny tick for buttons
+      blip: () => { note(88, 0, 0.18, 0.07); note(95, 0.06, 0.22, 0.05); }, // a new loading card
+      bloop: () => { note(72, 0, 0.16, 0.12, 'triangle'); note(79, 0.07, 0.2, 0.1, 'triangle'); }, // press / select
+      chime: () => [72, 76, 79, 84, 88].forEach((n, i) => note(n, i * 0.09, 0.9, 0.11)),          // logo sparkle
+      flip: () => note(67 + Math.floor(Math.random() * 3) * 2, 0, 0.09, 0.07, 'triangle'),          // flipping a sleeve
+      nope: () => { note(64, 0, 0.14, 0.08, 'triangle'); note(60, 0.08, 0.2, 0.07, 'triangle'); }, // just a filler record
+      found: () => [72, 76, 79, 84, 79, 84, 88, 91].forEach((n, i) => note(n, i * 0.075, 0.5, 0.12)), // yay!
+      padStart, padNext, padStop,
+    };
+  })();
+  const soundBtn = document.createElement('button');
+  soundBtn.type = 'button';
+  soundBtn.className = 'ar-sound';
+  const paintSound = () => {
+    soundBtn.textContent = SFX.on ? '♪ ON' : '♪ OFF';
+    soundBtn.setAttribute('aria-pressed', String(SFX.on));
+    soundBtn.setAttribute('aria-label', I18N.es ? 'Sonido' : 'Sound');
+  };
+  soundBtn.addEventListener('click', () => { SFX.toggle(); paintSound(); });
+  document.body.appendChild(soundBtn);
+  paintSound();
+
   // ── Pixel shopkeeper: the sun mascot (28×35 cells), drawn as SVG ──
   function ownerSVG() {
     const OR = '#F5A623', OL = '#141010', CR = '#F2EAD3', MR = '#8C1F2B', GD = '#E3A72F', HI = '#FFC75A';
@@ -267,6 +359,7 @@
   function launch() {
     if (launching) return;
     launching = true;
+    SFX.wake(); SFX.bloop();
     const icon = $('.ar-desk-icon');
     icon.classList.add('is-selected');
     $('.ar-desk-hint').textContent = '';
@@ -309,10 +402,10 @@
   function publisher() {
     showScreen(`
       <div class="ar-pub">
-        <p class="ar-pub-name" data-text="Angelo Studio">Angelo Studio</p>
-        <p class="ar-pub-sub">interactive</p>
+        <img class="ar-pub-logo" src="assets/angel-records/angelos-original-games.png" alt="ANGELOS Original Games">
         ${sparkle()}
       </div>${skipBtn()}`, 'is-pub ar-crt');
+    later(() => SFX.chime(), 700);
     later(pressTitle, 3600);
   }
   function pressTitle() {
@@ -330,6 +423,7 @@
   function loadingCards(count, each, then, shopId) {
     clearLater();
     mode = 'loading';
+    SFX.padStart();
     const caps = (cfg.intro && cfg.intro.captions) || [];
     // Before a round, prefer cards from the shop's own city.
     const near = shopId ? caps.filter(c => c.photo.includes('/' + shopId)) : [];
@@ -345,6 +439,7 @@
     const show = () => {
       const x = deck[i];
       if (x) {
+        SFX.blip(); if (i > 0) SFX.padNext();
         imgBox.innerHTML = photo(x.photo, `${file(x.photo)} · ${x.shows || ''}`);
         imgBox.firstElementChild.dataset.px = 120;
         hydrate(imgBox);
@@ -361,6 +456,7 @@
   function fadeToShop() {
     clearLater();
     mode = 'black';
+    SFX.padStop();
     showScreen('', 'is-black');
     later(() => startRound(shops[pickShop]), still() ? 250 : 1000);
   }
@@ -444,6 +540,7 @@
     round.at = (round.at + d + n) % n;
     paintSleeve(d);
     updateCount();
+    SFX.flip();
   }
   function updateCount() {
     const o = controls.querySelector('.ar-count');
@@ -456,6 +553,7 @@
     if (!s.rec) {
       if (el && !still()) { el.classList.remove('pulled'); void el.offsetWidth; el.classList.add('pulled'); }
       talk(line('filler'));
+      SFX.nope();
       return;
     }
     found(s.rec);
@@ -464,7 +562,8 @@
     const fresh = store.markFound(rec.id);
     if (!round.got.includes(rec.id)) round.got.push(rec.id);
     round.crates[round.crate][round.at] = { seed: Math.floor(Math.random() * 40) }; // can't find it twice this round
-    playRecord(rec);
+    SFX.found();
+    setTimeout(() => playRecord(rec), 700); // the jingle first, then the record
     mode = 'found';
     wiggle();
     burst();
@@ -587,8 +686,9 @@
   const startLoadingIntro = () => loadingCards(5, still() ? 2500 : 4500, finishIntro);
   root.addEventListener('click', e => {
     const b = e.target.closest('[data-ar]');
-    if (!b) { if (mode === 'press') startLoadingIntro(); return; }
+    if (!b) { if (mode === 'press') { SFX.bloop(); startLoadingIntro(); } return; }
     const a = b.dataset.ar;
+    if (a !== 'launch') SFX.tap();
     // The desktop icon: double-click with a mouse (like Windows), a single tap on phones.
     if (a === 'launch') { if (touch() || e.detail >= 2) launch(); else b.classList.add('is-selected'); return; }
     ({
@@ -617,7 +717,7 @@
   document.addEventListener('keydown', e => {
     if (e.target.closest('input, textarea')) return;
     if (mode === 'desk' && e.key === 'Enter' && e.target.closest('.ar-desk-icon')) { e.preventDefault(); launch(); return; }
-    if (mode === 'press' && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); startLoadingIntro(); return; }
+    if (mode === 'press' && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); SFX.bloop(); startLoadingIntro(); return; }
     if (/^(intro|loading|black)$/.test(mode)) { if (e.key === ' ') e.preventDefault(); return; }
     if (mode === 'crate') {
       if (e.key === 'ArrowLeft') { e.preventDefault(); flip(-1); }
@@ -657,6 +757,7 @@
   pageWords();
   I18N.on(() => {
     pageWords();
+    paintSound();
     paintNowPlaying();
     if (mode === 'desk') showDesk();
     else if (mode === 'title') title();
